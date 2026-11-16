@@ -7,1302 +7,1558 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
+
 <style>
-  :root {
-    --bg-page: #EEF2EC;
-    --bg-card: #FFFFFF;
-    --bg-subtle: #F6F8F5;
-    --bg-gold-soft: #FDF9EC;
-    --pine-dark: #0E422E;
-    --pine-main: #14533C;
-    --pine-light: #E4EDE8;
-    --gold-main: #E5C158;
-    --gold-border: #E8D595;
-    --gold-text: #8F6914;
-    --text-primary: #0E422E;
-    --text-secondary: #4A665A;
-    --text-muted: #768D82;
-    --border-card: #DCE4DC;
-  }
+:root {
+  --bg: #EEF2EC;
+  --card: #fff;
+  --sub: #F6F8F5;
+  --goldbg: #FDF9EC;
+  --pine: #0E422E;
+  --green: #14533C;
+  --light: #E4EDE8;
+  --gold: #E5C158;
+  --goldline: #E8D595;
+  --muted: #768D82;
+  --text: #0E422E;
+  --secondary: #4A665A;
+  --border: #DCE4DC;
+}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { width: 100%; min-height: 100%; }
-  body {
-    font-family: 'Inter', sans-serif;
-    background-color: var(--bg-page);
-    color: var(--text-primary);
-    min-height: 100vh;
-    -webkit-font-smoothing: antialiased;
-  }
-  button, input { font-family: inherit; }
-  .app { min-height: 100vh; width: 100%; display: flex; flex-direction: column; }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-  /* ================= LOGIN SCREEN ================= */
-  .login-screen {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  }
-  .login-card {
-    width: 100%;
-    max-width: 430px;
-    background: var(--bg-card);
-    border-radius: 24px;
-    padding: 36px 28px;
-    box-shadow: 0 20px 50px rgba(14, 66, 46, 0.08);
-    border: 1px solid var(--border-card);
-    text-align: center;
-  }
-  .login-brand {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 0.22em;
-    color: var(--pine-main);
-    text-transform: uppercase;
-    margin-bottom: 12px;
-  }
-  .login-icon {
-    width: 72px;
-    height: 72px;
-    margin: 0 auto 18px;
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--pine-light);
-    border: 1px solid #CFE0D6;
-  }
-  .login-title, .brand-title, .section-heading, .rank-value, .score-number, .leaderboard-title {
-    font-family: 'Montserrat', sans-serif;
-  }
-  .login-title {
-    font-size: 26px;
-    font-weight: 800;
-    color: var(--pine-dark);
-    margin-bottom: 8px;
-  }
-  .login-subtitle {
-    color: var(--text-secondary);
-    font-size: 14px;
-    line-height: 1.55;
-    margin-bottom: 24px;
-  }
-  .input-label {
-    display: block;
-    text-align: left;
-    margin-bottom: 7px;
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--pine-dark);
-  }
-  .login-input {
-    width: 100%;
-    height: 50px;
-    border-radius: 14px;
-    border: 1px solid #CBD8CE;
-    background: var(--bg-subtle);
-    padding: 0 16px;
-    outline: none;
-    color: var(--pine-dark);
-    font-size: 14px;
-    margin-bottom: 14px;
-    transition: all 0.2s ease;
-  }
-  .login-input:focus {
-    background: #fff;
-    border-color: var(--pine-main);
-    box-shadow: 0 0 0 4px rgba(20, 83, 60, 0.12);
-  }
-  .login-button {
-    width: 100%;
-    height: 50px;
-    border: 0;
-    border-radius: 14px;
-    background: var(--pine-dark);
-    color: #fff;
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-    margin-top: 4px;
-    transition: background 0.2s ease, transform 0.1s ease;
-  }
-  .login-button:hover { background: var(--pine-main); }
-  .login-button:active { transform: scale(0.99); }
-  .login-button:disabled { opacity: 0.65; cursor: wait; }
-  .login-error {
-    min-height: 20px;
-    margin-top: 12px;
-    font-size: 13px;
-    color: #C53030;
-    font-weight: 600;
-  }
+body {
+  font-family: Inter, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
 
-  /* ================= DASHBOARD ================= */
-  .dashboard {
-    display: none;
-    min-height: 100vh;
-    padding: 28px 24px 36px;
-  }
-  .dashboard-container {
-    max-width: 1160px;
-    margin: 0 auto;
-    width: 100%;
-  }
+button, input {
+  font: inherit;
+}
 
-  /* Centered Festive Header */
-  .top-header {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 12px 110px 26px;
-  }
-  .brand-kicker {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: 0.26em;
-    color: var(--pine-main);
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-  .title-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-  }
-  .brand-title {
-    font-size: 34px;
-    font-weight: 900;
-    color: var(--pine-dark);
-    letter-spacing: -0.02em;
-    line-height: 1.15;
-  }
-  .brand-dates {
-    margin-top: 8px;
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--text-secondary);
-    background: rgba(255, 255, 255, 0.72);
-    border: 1px solid var(--border-card);
-    padding: 5px 14px;
-    border-radius: 99px;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .xmas-tree-svg {
-    width: 44px;
-    height: 52px;
-    flex-shrink: 0;
-  }
-  .logout-button {
-    position: absolute;
-    top: 12px;
-    right: 0;
-    border: 1px solid #CBD8CE;
-    background: #fff;
-    color: var(--pine-dark);
-    padding: 9px 16px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-  .logout-button:hover {
-    background: var(--pine-light);
-    border-color: var(--pine-main);
-  }
+.app {
+  min-height: 100vh;
+}
 
-  /* Main 2-Column Layout */
+/* LOGIN */
+
+.login-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 430px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 36px 28px;
+  box-shadow: 0 20px 50px #0e422e14;
+  text-align: center;
+}
+
+.login-brand,
+.brand-kicker {
+  font: 800 11px Montserrat, sans-serif;
+  letter-spacing: .22em;
+  color: var(--green);
+  text-transform: uppercase;
+}
+
+.login-icon {
+  width: 72px;
+  height: 72px;
+  margin: 18px auto;
+  border-radius: 20px;
+  background: var(--light);
+  display: grid;
+  place-items: center;
+  font-size: 38px;
+}
+
+.login-title,
+.brand-title,
+.section-heading,
+.rank-value,
+.score-number,
+.leaderboard-title {
+  font-family: Montserrat, sans-serif;
+}
+
+.login-title {
+  font-size: 25px;
+  margin-bottom: 8px;
+}
+
+.login-subtitle {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--secondary);
+  margin-bottom: 24px;
+}
+
+.input-label {
+  display: block;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 700;
+  margin: 0 0 7px;
+}
+
+.login-input {
+  width: 100%;
+  height: 50px;
+  border: 1px solid #CBD8CE;
+  border-radius: 14px;
+  background: var(--sub);
+  padding: 0 16px;
+  margin-bottom: 14px;
+  outline: none;
+}
+
+.login-input:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 4px #14533c1f;
+}
+
+.login-button {
+  width: 100%;
+  height: 50px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--pine);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.login-button:disabled {
+  opacity: .6;
+  cursor: wait;
+}
+
+.login-error {
+  min-height: 20px;
+  margin-top: 12px;
+  color: #c53030;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* DASHBOARD */
+
+.dashboard {
+  display: none;
+  padding: 28px 24px 36px;
+}
+
+.dashboard-container {
+  max-width: 1160px;
+  margin: auto;
+}
+
+.top-header {
+  position: relative;
+  text-align: center;
+  padding: 12px 110px 26px;
+}
+
+.brand-kicker {
+  font-size: 12px;
+  letter-spacing: .26em;
+  margin-bottom: 7px;
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.brand-title {
+  font-size: 34px;
+  font-weight: 900;
+  line-height: 1.15;
+}
+
+.tree {
+  font-size: 34px;
+}
+
+.brand-dates {
+  display: inline-block;
+  margin-top: 9px;
+  padding: 5px 14px;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+  background: #ffffffb8;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--secondary);
+}
+
+.logout-button {
+  position: absolute;
+  right: 0;
+  top: 12px;
+  background: #fff;
+  border: 1px solid #CBD8CE;
+  border-radius: 12px;
+  padding: 9px 16px;
+  color: var(--pine);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.12fr) minmax(350px, .88fr);
+  gap: 22px;
+  align-items: start;
+}
+
+.left-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  box-shadow: 0 12px 32px #0e422e0d;
+}
+
+/* PERFORMANCE */
+
+.score-card {
+  padding: 26px;
+}
+
+.perf-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #e8efe9;
+  margin-bottom: 20px;
+}
+
+.section-heading {
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.score-email {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 4px;
+  word-break: break-all;
+}
+
+.countdown-pill {
+  background: var(--pine);
+  color: white;
+  padding: 8px 14px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  height: max-content;
+}
+
+.metrics-split {
+  display: grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.rank-hero-box {
+  padding: 20px;
+  border-radius: 18px;
+  background: linear-gradient(145deg, var(--pine), var(--green));
+  color: white;
+  min-height: 156px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.rank-hero-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #b6d3c6;
+}
+
+.rank-value {
+  font-size: 46px;
+  font-weight: 900;
+  margin: 8px 0;
+}
+
+.rank-gap-tag {
+  font-size: 12px;
+  font-weight: 700;
+  color: #fde68a;
+  background: #e5c15833;
+  border: 1px solid #e5c1588c;
+  padding: 5px 11px;
+  border-radius: 99px;
+  align-self: flex-start;
+}
+
+.sub-metrics-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.score-box {
+  flex: 1;
+  padding: 15px 18px;
+  border-radius: 16px;
+  background: var(--sub);
+  border: 1px solid #e3ece5;
+}
+
+.score-box-label,
+.weekly-box-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+
+.score-number {
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.score-unit {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--secondary);
+  margin-left: 3px;
+}
+
+/* MILESTONE */
+
+.milestone-box {
+  padding: 18px 20px;
+  border-radius: 18px;
+  background: var(--goldbg);
+  border: 1px solid var(--goldline);
+}
+
+.milestone-top,
+.milestone-bottom {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.milestone-top {
+  margin-bottom: 10px;
+}
+
+.milestone-title {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.milestone-ratio {
+  font-size: 13px;
+  color: var(--secondary);
+}
+
+.progress-track {
+  height: 11px;
+  border-radius: 99px;
+  background: #eae2c6;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--green), #237a57);
+  transition: width .5s;
+}
+
+.milestone-bottom {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--secondary);
+  font-weight: 700;
+}
+
+.unlock-pill {
+  background: #f9ebbf;
+  color: #8f6914;
+  padding: 4px 11px;
+  border-radius: 99px;
+}
+
+/* WEEKLY SNAPSHOT */
+
+.weekly-card,
+.rivals-card {
+  padding: 22px 26px;
+}
+
+.weekly-header,
+.rivals-header,
+.leaderboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.weekly-title,
+.rivals-title {
+  font: 800 16px Montserrat, sans-serif;
+  text-transform: uppercase;
+}
+
+.weekly-footer-note,
+.rivals-subtitle {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  text-align: right;
+}
+
+.weekly-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.weekly-box {
+  background: var(--sub);
+  border: 1px solid #e3ece5;
+  border-radius: 16px;
+  padding: 16px 18px;
+  min-height: 105px;
+}
+
+.weekly-pts {
+  font: 800 24px Montserrat, sans-serif;
+}
+
+.weekly-delta-badge {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--green);
+  margin-top: 5px;
+}
+
+.weekly-delta-badge.negative {
+  color: #b83232;
+}
+
+/* RIVALS + LEADERBOARD */
+
+.rivals-list,
+.leaderboard-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rival-row,
+.leaderboard-row {
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  border-radius: 14px;
+  background: var(--sub);
+  border: 1px solid #e5ece6;
+}
+
+.rival-row.is-you,
+.leaderboard-row.you {
+  background: var(--light);
+  border: 1.5px solid var(--green);
+}
+
+.rival-rank,
+.rank-pill {
+  font: 800 13px Montserrat, sans-serif;
+}
+
+.rival-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.rival-email,
+.leaderboard-email {
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.you-badge {
+  background: var(--pine);
+  color: white;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 99px;
+}
+
+.gap-pill {
+  font-size: 12px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 99px;
+  white-space: nowrap;
+}
+
+.gap-ahead {
+  background: #e3f1e8;
+  color: var(--green);
+}
+
+.gap-behind {
+  background: #fdecec;
+  color: #b83232;
+}
+
+.gap-you {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--green);
+  white-space: nowrap;
+}
+
+.leaderboard-card {
+  padding: 24px;
+}
+
+.leaderboard-title {
+  font-size: 22px;
+}
+
+.leaderboard-subtitle {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+
+.refresh-button {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  border: 1px solid #cbd8ce;
+  background: white;
+  color: var(--pine);
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.leaderboard-row {
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  min-height: 50px;
+}
+
+.rank-pill {
+  background: var(--pine);
+  color: white;
+  text-align: center;
+  padding: 5px;
+  border-radius: 9px;
+}
+
+.leaderboard-row.rank-1 {
+  background: var(--goldbg);
+  border-color: var(--goldline);
+}
+
+.leaderboard-row.rank-1 .rank-pill {
+  background: var(--gold);
+  color: var(--pine);
+}
+
+.leaderboard-loading,
+.leaderboard-error {
+  padding: 24px 12px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.leaderboard-error {
+  color: #c53030;
+}
+
+.footer-bar {
+  margin-top: 28px;
+  background: var(--pine);
+  color: #dce8e1;
+  padding: 12px 18px;
+  border-radius: 14px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.muted-note {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 9px;
+  text-align: right;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:920px) {
   .dashboard-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1.12fr) minmax(350px, 0.88fr);
-    gap: 22px;
-    align-items: start;
-  }
-  .left-column {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  .card {
-    background: var(--bg-card);
-    border-radius: 22px;
-    border: 1px solid var(--border-card);
-    box-shadow: 0 12px 32px rgba(14, 66, 46, 0.05);
+    grid-template-columns: 1fr;
   }
 
-  /* MY PERFORMANCE CARD */
-  .score-card { padding: 26px; }
-  .perf-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 12px;
-    padding-bottom: 18px;
-    border-bottom: 1px solid #E8EFE9;
-    margin-bottom: 20px;
-  }
-  .section-heading {
-    font-size: 24px;
-    font-weight: 800;
-    color: var(--pine-dark);
-    letter-spacing: -0.01em;
-    text-transform: uppercase;
-  }
-  .score-email {
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text-muted);
-    margin-top: 4px;
-    word-break: break-all;
-  }
-  .countdown-pill {
-    background: var(--pine-dark);
-    color: #fff;
-    padding: 8px 14px;
-    border-radius: 99px;
-    font-size: 12px;
-    font-weight: 700;
-    white-space: nowrap;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    flex-shrink: 0;
-  }
-  .countdown-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--gold-main);
+  .top-header {
+    padding: 46px 10px 22px;
   }
 
-  /* Split Metrics Grid */
-  .metrics-split {
-    display: grid;
-    grid-template-columns: 1.15fr 0.85fr;
-    gap: 14px;
-    margin-bottom: 18px;
+  .logout-button {
+    top: 0;
   }
-  .rank-hero-box {
-    padding: 20px;
+}
+
+@media(max-width:600px) {
+  .dashboard {
+    padding: 14px;
+  }
+
+  .brand-title {
+    font-size: 22px;
+  }
+
+  .tree {
+    font-size: 25px;
+  }
+
+  .score-card,
+  .weekly-card,
+  .rivals-card,
+  .leaderboard-card {
+    padding: 18px 16px;
     border-radius: 18px;
-    background: linear-gradient(145deg, var(--pine-dark) 0%, var(--pine-main) 100%);
-    color: #fff;
-    display: flex;
+  }
+
+  .perf-header {
     flex-direction: column;
-    justify-content: space-between;
-    min-height: 156px;
   }
-  .rank-hero-label {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: #B6D3C6;
+
+  .section-heading {
+    font-size: 20px;
   }
+
+  .metrics-split,
+  .weekly-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .rank-hero-box {
+    min-height: 130px;
+  }
+
   .rank-value {
-    font-size: 46px;
-    font-weight: 900;
-    color: #fff;
-    line-height: 1.05;
-    margin: 8px 0;
-  }
-  .rank-gap-tag {
-    display: inline-flex;
-    align-items: center;
-    align-self: flex-start;
-    background: rgba(229, 193, 88, 0.2);
-    border: 1px solid rgba(229, 193, 88, 0.55);
-    color: #FDE68A;
-    font-size: 12px;
-    font-weight: 700;
-    padding: 5px 11px;
-    border-radius: 99px;
+    font-size: 38px;
   }
 
   .sub-metrics-stack {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    flex-direction: row;
   }
+
   .score-box {
-    flex: 1;
-    padding: 15px 18px;
-    border-radius: 16px;
-    background: var(--bg-subtle);
-    border: 1px solid #E3ECE5;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    padding: 14px;
   }
-  .score-box-label {
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--text-muted);
-    margin-bottom: 4px;
-  }
+
   .score-number {
-    font-size: 28px;
-    font-weight: 800;
-    color: var(--pine-dark);
-    line-height: 1.1;
-  }
-  .score-unit {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--text-secondary);
-    margin-left: 3px;
+    font-size: 23px;
   }
 
-  /* Milestone Box */
-  .milestone-box {
-    padding: 18px 20px;
-    border-radius: 18px;
-    background: var(--bg-gold-soft);
-    border: 1px solid var(--gold-border);
-  }
-  .milestone-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 10px;
-    flex-wrap: wrap;
-  }
-  .milestone-title {
-    font-size: 14px;
-    font-weight: 800;
-    color: var(--pine-dark);
-  }
-  .milestone-ratio {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--text-secondary);
-  }
-  .milestone-ratio strong {
-    color: var(--pine-dark);
-    font-weight: 800;
-  }
-  .progress-track {
-    width: 100%;
-    height: 11px;
-    border-radius: 99px;
-    background: #EAE2C6;
-    overflow: hidden;
-  }
-  .progress-fill {
-    height: 100%;
-    width: 0%;
-    border-radius: 99px;
-    background: linear-gradient(90deg, var(--pine-main) 0%, #237A57 100%);
-    transition: width 0.6s ease;
-  }
-  .milestone-bottom {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    margin-top: 10px;
-  }
-  .milestone-percent {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--text-secondary);
-  }
-  .unlock-pill {
-    font-size: 12px;
-    font-weight: 800;
-    color: var(--gold-text);
-    background: #F9EBBF;
-    padding: 4px 11px;
-    border-radius: 99px;
-  }
-
-  /* WEEKLY SNAPSHOT CARD (Clean White Style) */
-  .weekly-card { padding: 22px 26px; }
-  .weekly-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 14px;
-  }
-  .weekly-title {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 16px;
-    font-weight: 800;
-    color: var(--pine-dark);
-    text-transform: uppercase;
-  }
-  .weekly-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-    margin-bottom: 12px;
-  }
-  .weekly-box {
-    background: var(--bg-subtle);
-    border: 1px solid #E3ECE5;
-    border-radius: 16px;
-    padding: 16px 18px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  .weekly-box-label {
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--text-muted);
-    margin-bottom: 8px;
-  }
-  .weekly-metric-row {
-    display: flex;
-    align-items: baseline;
-    gap: 8px;
-  }
-  .weekly-pts {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 24px;
-    font-weight: 800;
-    color: var(--pine-dark);
-  }
-  .weekly-delta-badge {
-    font-size: 12px;
-    font-weight: 700;
-    color: #14533C;
-    display: inline-flex;
-    align-items: center;
-    gap: 3px;
-    margin-top: 4px;
-  }
-  .weekly-footer-note {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-muted);
-    text-align: right;
-  }
-
-  /* NEARBY RIVALS CARD */
-  .rivals-card { padding: 22px 26px; }
-  .rivals-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 14px;
-  }
-  .rivals-title {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 16px;
-    font-weight: 800;
-    color: var(--pine-dark);
-  }
-  .rivals-subtitle {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-muted);
-  }
-  .rivals-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
   .rival-row {
-    display: grid;
-    grid-template-columns: 46px minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 10px;
-    padding: 11px 14px;
-    border-radius: 14px;
-    background: var(--bg-subtle);
-    border: 1px solid #E5ECE6;
-  }
-  .rival-row.is-you {
-    background: var(--pine-light);
-    border: 1.5px solid var(--pine-main);
-  }
-  .rival-rank {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 13px;
-    font-weight: 800;
-    color: var(--text-secondary);
-  }
-  .rival-row.is-you .rival-rank { color: var(--pine-dark); }
-  .rival-user {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    min-width: 0;
-  }
-  .rival-email {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--pine-dark);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .you-badge {
-    background: var(--pine-dark);
-    color: #fff;
-    font-size: 10px;
-    font-weight: 800;
-    padding: 3px 8px;
-    border-radius: 99px;
-    letter-spacing: 0.04em;
-    flex-shrink: 0;
-  }
-  .gap-pill {
-    font-size: 12px;
-    font-weight: 800;
-    padding: 4px 10px;
-    border-radius: 99px;
-    white-space: nowrap;
-  }
-  .gap-ahead {
-    background: #E3F1E8;
-    color: #14533C;
-  }
-  .gap-behind {
-    background: #FDECEC;
-    color: #B83232;
-  }
-  .gap-you {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--pine-main);
-    white-space: nowrap;
+    grid-template-columns: 38px minmax(0, 1fr) auto;
+    padding: 10px 9px;
+    gap: 7px;
   }
 
-  /* LEADERBOARD CARD */
-  .leaderboard-card { padding: 24px; }
-  .leaderboard-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 16px;
-  }
-  .leaderboard-title {
-    font-size: 22px;
-    font-weight: 800;
-    color: var(--pine-dark);
-  }
-  .leaderboard-subtitle {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-muted);
-    margin-top: 3px;
-  }
-  .refresh-button {
-    width: 38px;
-    height: 38px;
-    border-radius: 12px;
-    border: 1px solid #CBD8CE;
-    background: #fff;
-    color: var(--pine-dark);
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 700;
-    transition: all 0.2s ease;
-    flex-shrink: 0;
-  }
-  .refresh-button:hover {
-    background: var(--pine-light);
-    border-color: var(--pine-main);
-  }
-  .leaderboard-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .leaderboard-row {
-    display: grid;
-    grid-template-columns: 44px minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 12px;
-    min-height: 50px;
-    padding: 9px 14px;
-    border-radius: 14px;
-    background: var(--bg-subtle);
-    border: 1px solid #E5ECE6;
-  }
-  .leaderboard-row.rank-1 {
-    background: var(--bg-gold-soft);
-    border-color: var(--gold-border);
-  }
-  .leaderboard-row.you {
-    background: var(--pine-light);
-    border: 1.5px solid var(--pine-main);
-  }
-  .rank-pill {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 12px;
-    font-weight: 800;
-    text-align: center;
-    padding: 5px 0;
-    border-radius: 9px;
-    background: var(--pine-dark);
-    color: #fff;
-  }
-  .leaderboard-row.rank-1 .rank-pill {
-    background: var(--gold-main);
-    color: var(--pine-dark);
-  }
+  .rival-email,
   .leaderboard-email {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--pine-dark);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .leaderboard-loading, .leaderboard-error {
-    padding: 28px 12px;
-    text-align: center;
-    font-size: 13px;
-  }
-  .leaderboard-loading { color: var(--text-muted); }
-  .leaderboard-error { color: #C53030; font-weight: 600; }
-
-  /* Confidential Footer */
-  .footer-bar {
-    margin-top: 28px;
-    background: var(--pine-dark);
-    color: #DCE8E1;
-    padding: 12px 18px;
-    border-radius: 14px;
-    text-align: center;
     font-size: 12px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
   }
 
-  /* ================= RESPONSIVE ================= */
-  @media (max-width: 920px) {
-    .dashboard-grid {
-      grid-template-columns: 1fr;
-    }
-    .top-header {
-      padding: 46px 10px 22px;
-    }
-    .logout-button {
-      top: 0;
-      right: 0;
-    }
+  .weekly-header {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
-  @media (max-width: 600px) {
-    .dashboard {
-      padding: 14px 14px 28px;
-    }
-    .brand-title {
-      font-size: 23px;
-    }
-    .title-row {
-      gap: 8px;
-    }
-    .xmas-tree-svg {
-      width: 32px;
-      height: 38px;
-    }
-    .brand-dates {
-      font-size: 12px;
-      padding: 4px 12px;
-    }
-    .score-card, .weekly-card, .rivals-card, .leaderboard-card {
-      padding: 18px 16px;
-      border-radius: 18px;
-    }
-    .perf-header {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 10px;
-    }
-    .section-heading {
-      font-size: 20px;
-    }
-    .metrics-split, .weekly-grid {
-      grid-template-columns: 1fr;
-    }
-    .rank-hero-box {
-      min-height: auto;
-      padding: 18px;
-    }
-    .rank-value {
-      font-size: 38px;
-    }
-    .sub-metrics-stack {
-      flex-direction: row;
-    }
-    .score-box {
-      padding: 14px;
-    }
-    .score-number {
-      font-size: 24px;
-    }
-    .rival-row {
-      grid-template-columns: 40px minmax(0, 1fr) auto;
-      padding: 10px 11px;
-      gap: 8px;
-    }
-    .rival-email, .leaderboard-email {
-      font-size: 12px;
-    }
-    .gap-pill {
-      font-size: 11px;
-      padding: 3px 8px;
-    }
-    .footer-bar {
-      font-size: 11px;
-      line-height: 1.4;
-    }
+  .weekly-footer-note {
+    text-align: left;
   }
+}
 </style>
 </head>
+
 <body>
 <iframe id="loginTransport" name="loginTransport" title="Login transport" style="display:none"></iframe>
 
 <div class="app">
-  <!-- LOGIN SCREEN -->
-  <section id="loginScreen" class="login-screen">
-    <div class="login-card">
-      <div class="login-brand">Mayzing</div>
-      <div class="login-icon">
-        <svg width="36" height="42" viewBox="0 0 44 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M22 2L23.8 6.2L28.4 6.6L24.9 9.6L26 14.1L22 11.7L18 14.1L19.1 9.6L15.6 6.6L20.2 6.2L22 2Z" fill="#E5C158"/>
-          <path d="M22 11L33 24H27.5L36.5 35H29.5L39 45H5L14.5 35H7.5L16.5 24H11L22 11Z" fill="#0E422E"/>
-          <rect x="19" y="45" width="6" height="5" rx="1" fill="#7C5832"/>
-          <circle cx="19" cy="21" r="1.6" fill="#FDE68A"/>
-          <circle cx="25.5" cy="28" r="1.7" fill="#E5C158"/>
-          <circle cx="16.5" cy="33" r="1.6" fill="#FDE68A"/>
-          <circle cx="26.5" cy="40" r="1.8" fill="#E5C158"/>
-        </svg>
+
+<!-- LOGIN SCREEN -->
+<section id="loginScreen" class="login-screen">
+  <div class="login-card">
+    <div class="login-brand">Mayzing</div>
+    <div class="login-icon">🎄</div>
+
+    <h1 class="login-title">Christmas Contest 2026</h1>
+
+    <p class="login-subtitle">
+      Sign in with your registered email and passcode to track your contest ranking.
+    </p>
+
+    <label class="input-label" for="emailInput">Email</label>
+    <input
+      id="emailInput"
+      class="login-input"
+      type="email"
+      placeholder="name@example.com"
+      autocomplete="username"
+      spellcheck="false"
+    >
+
+    <label class="input-label" for="passcodeInput">Passcode</label>
+    <input
+      id="passcodeInput"
+      class="login-input"
+      type="password"
+      placeholder="Enter your private passcode"
+      autocomplete="current-password"
+    >
+
+    <button id="loginButton" class="login-button" type="button" onclick="login()">
+      Log In
+    </button>
+
+    <div id="loginError" class="login-error"></div>
+  </div>
+</section>
+
+<!-- DASHBOARD -->
+<section id="dashboard" class="dashboard">
+  <div class="dashboard-container">
+
+    <header class="top-header">
+      <button class="logout-button" type="button" onclick="logout()">Logout</button>
+
+      <div class="brand-kicker">Mayzing</div>
+
+      <div class="title-row">
+        <span class="tree">🎄</span>
+        <h1 class="brand-title">Christmas Contest 2026</h1>
+        <span class="tree">🎄</span>
       </div>
-      <h1 class="login-title">Christmas Contest 2026</h1>
-      <p class="login-subtitle">Sign in with your registered email and passcode to track your contest ranking.</p>
-      <label class="input-label" for="emailInput">Email</label>
-      <input id="emailInput" class="login-input" type="email" placeholder="name@example.com" autocomplete="username" spellcheck="false">
-      <label class="input-label" for="passcodeInput">Passcode</label>
-      <input id="passcodeInput" class="login-input" type="password" placeholder="Enter your private passcode" autocomplete="current-password">
-      <button id="loginButton" class="login-button" type="button" onclick="login()">Log In</button>
-      <div id="loginError" class="login-error"></div>
-    </div>
-  </section>
 
-  <!-- DASHBOARD -->
-  <section id="dashboard" class="dashboard">
-    <div class="dashboard-container">
-      <header class="top-header">
-        <button class="logout-button" type="button" onclick="logout()">Logout</button>
-        <div class="brand-kicker">Mayzing</div>
-        <div class="title-row">
-          <svg class="xmas-tree-svg" viewBox="0 0 44 52" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M22 2L23.8 6.2L28.4 6.6L24.9 9.6L26 14.1L22 11.7L18 14.1L19.1 9.6L15.6 6.6L20.2 6.2L22 2Z" fill="#E5C158"/>
-            <path d="M22 11L33 24H27.5L36.5 35H29.5L39 45H5L14.5 35H7.5L16.5 24H11L22 11Z" fill="#0E422E"/>
-            <rect x="19" y="45" width="6" height="5" rx="1" fill="#7C5832"/>
-            <circle cx="19.5" cy="21" r="1.5" fill="#FDE68A"/>
-            <circle cx="25" cy="28.5" r="1.6" fill="#E5C158"/>
-            <circle cx="16.5" cy="33.5" r="1.5" fill="#FDE68A"/>
-            <circle cx="26" cy="40.5" r="1.6" fill="#E5C158"/>
-          </svg>
+      <div class="brand-dates">Sep 30 – Dec 31 (GMT)</div>
+    </header>
 
-          <h1 class="brand-title">Christmas Contest 2026</h1>
+    <main class="dashboard-grid">
 
-          <svg class="xmas-tree-svg" viewBox="0 0 44 52" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M22 2L23.8 6.2L28.4 6.6L24.9 9.6L26 14.1L22 11.7L18 14.1L19.1 9.6L15.6 6.6L20.2 6.2L22 2Z" fill="#E5C158"/>
-            <path d="M22 11L33 24H27.5L36.5 35H29.5L39 45H5L14.5 35H7.5L16.5 24H11L22 11Z" fill="#0E422E"/>
-            <rect x="19" y="45" width="6" height="5" rx="1" fill="#7C5832"/>
-            <circle cx="24.5" cy="21" r="1.5" fill="#FDE68A"/>
-            <circle cx="18.5" cy="28.5" r="1.6" fill="#E5C158"/>
-            <circle cx="27" cy="33.5" r="1.5" fill="#FDE68A"/>
-            <circle cx="17.5" cy="40.5" r="1.6" fill="#E5C158"/>
-          </svg>
-        </div>
-        <div class="brand-dates">Sep 30 – Dec 31 (GMT)</div>
-      </header>
+      <!-- LEFT COLUMN -->
+      <div class="left-column">
 
-      <main class="dashboard-grid">
-        <!-- LEFT COLUMN -->
-        <div class="left-column">
-          <section class="card score-card">
-            <div class="perf-header">
-              <div>
-                <h2 class="section-heading">My Performance</h2>
-                <div id="scoreEmail" class="score-email">Loading...</div>
-              </div>
-              <div id="countdownBadge" class="countdown-pill">
-                <span class="countdown-dot"></span>
-                <span id="daysLeftText">— days left</span>
-              </div>
-            </div>
-
-            <div class="metrics-split">
-              <div class="rank-hero-box">
-                <div class="rank-hero-label">Current Rank</div>
-                <div id="rankValue" class="rank-value">—</div>
-                <div id="rankGapTag" class="rank-gap-tag">Calculating gap...</div>
-              </div>
-
-              <div class="sub-metrics-stack">
-                <div class="score-box">
-                  <div class="score-box-label">Total Points</div>
-                  <div><span id="pointsValue" class="score-number">—</span><span class="score-unit">pts</span></div>
-                </div>
-                <div class="score-box">
-                  <div class="score-box-label">Units</div>
-                  <div><span id="unitsValue" class="score-number">—</span></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="milestone-box">
-              <div class="milestone-top">
-                <div id="nextMilestoneTitle" class="milestone-title">Next milestone: — points</div>
-                <div id="progressPoints" class="milestone-ratio">—</div>
-              </div>
-              <div class="progress-track">
-                <div id="progressFill" class="progress-fill"></div>
-              </div>
-              <div class="milestone-bottom">
-                <span id="progressPercentText" class="milestone-percent">0% completed</span>
-                <span id="pointsToUnlockBadge" class="unlock-pill">— pts to unlock</span>
-              </div>
-            </div>
-          </section>
-
-          <!-- WEEKLY SNAPSHOT (Clean White Card Style) -->
-          <section class="card weekly-card">
-            <div class="weekly-header">
-              <h3 class="weekly-title">Weekly Snapshot</h3>
-              <span class="weekly-footer-note">vs. Mon snapshot (GMT+7)</span>
-            </div>
-            <div class="weekly-grid">
-              <div class="weekly-box">
-                <div class="weekly-box-label">Personal Delta</div>
-                <div>
-                  <div class="weekly-metric-row">
-                    <span class="weekly-pts">+1,240 pts</span>
-                  </div>
-                  <div class="weekly-delta-badge">▲ +2 spots ranking</div>
-                </div>
-              </div>
-              <div class="weekly-box">
-                <div class="weekly-box-label">Team Delta</div>
-                <div>
-                  <div class="weekly-metric-row">
-                    <span class="weekly-pts">+3,800 pts</span>
-                  </div>
-                  <div class="weekly-delta-badge">▲ Team Rank: #6</div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- NEARBY RIVALS -->
-          <section class="card rivals-card">
-            <div class="rivals-header">
-              <h3 class="rivals-title">Nearby Rivals</h3>
-              <span class="rivals-subtitle">Direct point gaps</span>
-            </div>
-            <div id="rivalsList" class="rivals-list">
-              <div class="leaderboard-loading">Loading nearby competitors...</div>
-            </div>
-          </section>
-        </div>
-
-        <!-- RIGHT COLUMN -->
-        <section class="card leaderboard-card">
-          <div class="leaderboard-header">
+        <!-- MY PERFORMANCE -->
+        <section class="card score-card">
+          <div class="perf-header">
             <div>
-              <h2 class="leaderboard-title">Leaderboard</h2>
-              <div class="leaderboard-subtitle">Top 10 Standings</div>
+              <h2 class="section-heading">My Performance</h2>
+              <div id="scoreEmail" class="score-email">Loading...</div>
             </div>
-            <button id="refreshButton" class="refresh-button" type="button" onclick="refreshLeaderboard()" title="Refresh leaderboard">↻</button>
+
+            <div class="countdown-pill">
+              <span id="daysLeftText">— days left</span>
+            </div>
           </div>
-          <div id="leaderboardList" class="leaderboard-list">
-            <div class="leaderboard-loading">Loading leaderboard...</div>
+
+          <div class="metrics-split">
+            <div class="rank-hero-box">
+              <div class="rank-hero-label">Current Rank</div>
+              <div id="rankValue" class="rank-value">—</div>
+              <div id="rankGapTag" class="rank-gap-tag">Personal ranking</div>
+            </div>
+
+            <div class="sub-metrics-stack">
+              <div class="score-box">
+                <div class="score-box-label">Total Points</div>
+                <div>
+                  <span id="pointsValue" class="score-number">—</span>
+                  <span class="score-unit">pts</span>
+                </div>
+              </div>
+
+              <div class="score-box">
+                <div class="score-box-label">Units</div>
+                <div>
+                  <span id="unitsValue" class="score-number">—</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="milestone-box">
+            <div class="milestone-top">
+              <div id="nextMilestoneTitle" class="milestone-title">
+                Next milestone: —
+              </div>
+              <div id="progressPoints" class="milestone-ratio">—</div>
+            </div>
+
+            <div class="progress-track">
+              <div id="progressFill" class="progress-fill"></div>
+            </div>
+
+            <div class="milestone-bottom">
+              <span id="progressPercentText">0% completed</span>
+              <span id="pointsToUnlockBadge" class="unlock-pill">— pts to unlock</span>
+            </div>
           </div>
         </section>
-      </main>
 
-      <footer class="footer-bar">
-        <span>🔒 This invite-only communication is private and confidential and must not be shared externally.</span>
-      </footer>
-    </div>
-  </section>
+        <!-- WEEKLY SNAPSHOT -->
+        <section class="card weekly-card">
+          <div class="weekly-header">
+            <h3 class="weekly-title">Weekly Snapshot</h3>
+            <span id="weeklyRange" class="weekly-footer-note">
+              Compared with previous Monday snapshot
+            </span>
+          </div>
+
+          <div class="weekly-grid">
+            <div class="weekly-box">
+              <div class="weekly-box-label">Personal Delta</div>
+              <div class="weekly-pts" id="personalDelta">—</div>
+              <div class="weekly-delta-badge" id="personalRankDelta">
+                No previous snapshot
+              </div>
+            </div>
+
+            <div class="weekly-box">
+              <div class="weekly-box-label">Team Delta</div>
+              <div class="weekly-pts" id="teamDelta">—</div>
+              <div class="weekly-delta-badge" id="teamRankDelta">
+                No team snapshot
+              </div>
+            </div>
+          </div>
+
+          <div class="muted-note">
+            Snapshots are recorded on Mondays (GMT+7)
+          </div>
+        </section>
+
+        <!-- NEARBY RIVALS -->
+        <section class="card rivals-card">
+          <div class="rivals-header">
+            <h3 class="rivals-title">Nearby Rivals</h3>
+            <span class="rivals-subtitle">Direct point gaps</span>
+          </div>
+
+          <div id="rivalsList" class="rivals-list">
+            <div class="leaderboard-loading">
+              Loading nearby competitors...
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <section class="card leaderboard-card">
+        <div class="leaderboard-header">
+          <div>
+            <h2 class="leaderboard-title">Leaderboard</h2>
+            <div class="leaderboard-subtitle">
+              Top 10 Standings · Teams combined
+            </div>
+          </div>
+
+          <button
+            id="refreshButton"
+            class="refresh-button"
+            type="button"
+            onclick="refreshLeaderboard()"
+            title="Refresh leaderboard"
+          >↻</button>
+        </div>
+
+        <div id="leaderboardList" class="leaderboard-list">
+          <div class="leaderboard-loading">Loading leaderboard...</div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="footer-bar">
+      🔒 This invite-only communication is private and confidential and must not be shared externally.
+    </footer>
+
+  </div>
+</section>
 </div>
 
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbzEhuxZPljx4Nyn46aEOduEJDVhbUbRGtxbEZE8_cCL5WV1-4NAoNyqi_X45kBe5TVp3g/exec";
+/* ================= CONFIG ================= */
+
+const API_URL =
+  "https://script.google.com/macros/s/AKfycbzEhuxZPljx4Nyn46aEOduEJDVhbUbRGtxbEZE8_cCL5WV1-4NAoNyqi_X45kBe5TVp3g/exec";
+
 let currentUserId = "";
 let currentUserRank = 0;
 let currentUserData = null;
 let leaderboardData = [];
-const TOP_COUNT = 10;
-const MILESTONES = [250, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000, 125000];
 
-function getNextMilestone(points) {
+const TOP_COUNT = 10;
+
+const MILESTONES = [
+  250, 500, 1000, 2500, 5000,
+  10000, 25000, 50000, 100000, 125000
+];
+
+const $ = id => document.getElementById(id);
+
+const fmt = value =>
+  Number(value || 0).toLocaleString("en-US");
+
+const signed = value =>
+  (Number(value) > 0 ? "+" : "") + fmt(value);
+
+const esc = value =>
+  String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  }[char]));
+
+/* ================= MILESTONES ================= */
+
+function nextMilestone(points) {
   return MILESTONES.find(m => points < m) || null;
 }
 
-function getPreviousMilestone(points) {
-  let prev = 0;
-  for (const m of MILESTONES) {
-    if (points >= m) prev = m;
-    else break;
+function prevMilestone(points) {
+  let previous = 0;
+
+  for (const milestone of MILESTONES) {
+    if (points >= milestone) {
+      previous = milestone;
+    } else {
+      break;
+    }
   }
-  return prev;
+
+  return previous;
 }
 
-function updateContestCountdown() {
+/* ================= COUNTDOWN ================= */
+
+function updateCountdown() {
   const endDate = new Date("2026-12-31T23:59:59Z");
-  const now = new Date();
-  const diffMs = endDate - now;
-  const daysLeft = Math.max(0, Math.ceil(diffMs / (1000 * 60 * 60 * 24)));
-  const el = document.getElementById("daysLeftText");
-  if (el) {
-    el.textContent = daysLeft === 1 ? "1 day left" : daysLeft + " days left";
-  }
+  const days = Math.max(
+    0,
+    Math.ceil((endDate - new Date()) / 86400000)
+  );
+
+  $("daysLeftText").textContent =
+    days === 1 ? "1 day left" : days + " days left";
 }
+
+/* ================= LOGIN TRANSPORT ================= */
 
 function postLogin(email, passcode) {
   return new Promise((resolve, reject) => {
-    const frame = document.getElementById('loginTransport');
-    const nonce = 'wc_' + Date.now() + '_' + Math.random().toString(36).slice(2);
-    let done = false;
-    const timer = setTimeout(() => finish(null), 12000);
+    const nonce =
+      "wc_" + Date.now() + "_" +
+      Math.random().toString(36).slice(2);
+
+    let finished = false;
+
+    const timer = setTimeout(() => finish(null), 15000);
 
     function finish(data) {
-      if (done) return;
-      done = true;
+      if (finished) return;
+
+      finished = true;
       clearTimeout(timer);
-      window.removeEventListener('message', onMessage);
-      if (data) resolve(data);
-      else reject(new Error('Unable to receive login response. Please try again.'));
+      window.removeEventListener("message", onMessage);
+
+      if (data) {
+        resolve(data);
+      } else {
+        reject(new Error(
+          "Unable to receive login response. Please try again."
+        ));
+      }
     }
 
     function onMessage(event) {
       let data = event.data;
-      if (typeof data === 'string') {
-        try { data = JSON.parse(data); } catch (e) { return; }
+
+      if (typeof data === "string") {
+        try {
+          data = JSON.parse(data);
+        } catch (_) {
+          return;
+        }
       }
-      if (!data || typeof data !== 'object' || data.nonce !== nonce) return;
-      finish(data);
+
+      if (
+        data &&
+        typeof data === "object" &&
+        data.nonce === nonce
+      ) {
+        finish(data);
+      }
     }
 
-    window.addEventListener('message', onMessage);
+    window.addEventListener("message", onMessage);
 
-    const form = document.createElement('form');
-    form.method = 'POST';
+    const form = document.createElement("form");
+    form.method = "POST";
     form.action = API_URL;
-    form.target = 'loginTransport';
-    form.style.display = 'none';
+    form.target = "loginTransport";
+    form.style.display = "none";
 
-    [['action', 'login'], ['email', email], ['passcode', passcode], ['nonce', nonce]].forEach(([key, value]) => {
-      const input = document.createElement('input');
-      input.type = 'hidden';
+    [
+      ["action", "login"],
+      ["email", email],
+      ["passcode", passcode],
+      ["nonce", nonce]
+    ].forEach(([key, value]) => {
+      const input = document.createElement("input");
+      input.type = "hidden";
       input.name = key;
       input.value = value;
       form.appendChild(input);
     });
 
     document.body.appendChild(form);
-    try { form.submit(); }
-    catch (err) { finish(null); }
+
+    try {
+      form.submit();
+    } catch (error) {
+      finish(null);
+    }
+
     form.remove();
   });
 }
 
-async function login() {
-  const emailEl = document.getElementById('emailInput');
-  const passEl = document.getElementById('passcodeInput');
-  const button = document.getElementById('loginButton');
-  const error = document.getElementById('loginError');
-  const email = String(emailEl.value || '').trim().toLowerCase();
-  const passcode = String(passEl.value || '').trim();
+/* ================= LOGIN ================= */
 
-  error.textContent = '';
+async function login() {
+  const email = $("emailInput").value.trim().toLowerCase();
+  const passcode = $("passcodeInput").value.trim();
+  const button = $("loginButton");
+  const errorBox = $("loginError");
+
+  errorBox.textContent = "";
+
   if (!email || !passcode) {
-    error.textContent = 'Please enter both email and passcode.';
-    (!email ? emailEl : passEl).focus();
+    errorBox.textContent =
+      "Please enter both email and passcode.";
+
+    if (!email) {
+      $("emailInput").focus();
+    } else {
+      $("passcodeInput").focus();
+    }
+
     return;
   }
 
   button.disabled = true;
-  button.textContent = 'Checking...';
+  button.textContent = "Checking...";
 
   try {
     const result = await postLogin(email, passcode);
+
     if (!result || !result.ok) {
-      throw new Error(result && result.error ? result.error : 'Incorrect email or passcode.');
+      throw new Error(
+        result && result.error
+          ? result.error
+          : "Incorrect email or passcode."
+      );
     }
 
     currentUserData = result.profile;
-    currentUserRank = Number(result.profile.rank || 0);
     currentUserId = email;
+    currentUserRank = Number(result.profile.rank || 0);
 
-    updateContestCountdown();
-    renderPersonalScore(result.profile);
+    renderProfile(result.profile);
 
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('dashboard').style.display = 'block';
+    $("loginScreen").style.display = "none";
+    $("dashboard").style.display = "block";
 
-    loadLeaderboard(currentUserId, currentUserRank).catch(err => {
-      console.error('Leaderboard error:', err);
-      document.getElementById('leaderboardList').innerHTML =
-        '<div class="leaderboard-error">Unable to load leaderboard. Please refresh.</div>';
-      document.getElementById('rivalsList').innerHTML =
-        '<div class="leaderboard-error">Unable to load nearby rivals.</div>';
-    });
-  } catch (err) {
-    console.error('Login error:', err);
-    currentUserId = '';
-    currentUserRank = 0;
+    await loadLeaderboard();
+
+  } catch (error) {
+    console.error("Login error:", error);
+
     currentUserData = null;
-    error.textContent = err.message || 'Unable to log in.';
+    currentUserId = "";
+    currentUserRank = 0;
+
+    errorBox.textContent =
+      error.message || "Unable to log in.";
+
   } finally {
     button.disabled = false;
-    button.textContent = 'Log In';
+    button.textContent = "Log In";
   }
 }
 
-document.getElementById('emailInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter') document.getElementById('passcodeInput').focus();
+$("emailInput").addEventListener("keydown", event => {
+  if (event.key === "Enter") {
+    $("passcodeInput").focus();
+  }
 });
-document.getElementById('passcodeInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter') login();
+
+$("passcodeInput").addEventListener("keydown", event => {
+  if (event.key === "Enter") {
+    login();
+  }
 });
 
-function renderPersonalScore(data) {
-  const points = Number(data.points || 0);
-  const units = Number(data.units || 0);
-  const rank = Number(data.rank || 0);
-  const email = String(data.email || '');
+/* ================= PERSONAL PERFORMANCE ================= */
 
-  const nextMilestone = getNextMilestone(points);
-  const prevMilestone = getPreviousMilestone(points);
+function renderProfile(profile) {
+  const points = Number(profile.points || 0);
+  const units = Number(profile.units || 0);
+  const rank = Number(profile.rank || 0);
+  const team = profile.team || null;
 
-  document.getElementById('scoreEmail').textContent = email;
-  document.getElementById('pointsValue').textContent = formatNumber(points);
-  document.getElementById('unitsValue').textContent = formatNumber(units);
-  document.getElementById('rankValue').textContent = '#' + rank;
-  document.getElementById('rankGapTag').textContent = rank === 1 ? '👑 #1 Spot' : 'Target: #' + (rank - 1);
+  $("scoreEmail").textContent = profile.email || "";
+  $("pointsValue").textContent = fmt(points);
+  $("unitsValue").textContent = fmt(units);
+  $("rankValue").textContent = "#" + rank;
 
-  if (nextMilestone) {
-    const span = nextMilestone - prevMilestone;
-    const rawPct = span > 0 ? ((points - prevMilestone) / span) * 100 : (points / nextMilestone) * 100;
-    const pct = Math.max(0, Math.min(100, rawPct));
-    const pctDisplay = pct.toFixed(1).replace(/\.0$/, '');
-    const ptsLeft = Math.max(0, nextMilestone - points);
+  $("rankGapTag").textContent =
+    rank === 1 ? "👑 #1 Spot" : "Personal ranking";
 
-    document.getElementById('nextMilestoneTitle').textContent =
-      'Next milestone: ' + formatNumber(nextMilestone) + ' points';
-    document.getElementById('progressPoints').innerHTML =
-      '<strong>' + formatNumber(points) + '</strong> / ' + formatNumber(nextMilestone) + ' pts';
-    document.getElementById('progressFill').style.width = pct + '%';
-    document.getElementById('progressPercentText').textContent = pctDisplay + '% completed';
-    document.getElementById('pointsToUnlockBadge').textContent = formatNumber(ptsLeft) + ' pts to unlock';
+  const next = nextMilestone(points);
+  const previous = prevMilestone(points);
+
+  if (next) {
+    const percentage = Math.max(
+      0,
+      Math.min(
+        100,
+        ((points - previous) / (next - previous)) * 100
+      )
+    );
+
+    $("nextMilestoneTitle").textContent =
+      "Next milestone: " + fmt(next) + " points";
+
+    $("progressPoints").innerHTML =
+      "<strong>" + fmt(points) + "</strong> / " +
+      fmt(next) + " pts";
+
+    $("progressFill").style.width = percentage + "%";
+
+    $("progressPercentText").textContent =
+      percentage.toFixed(1).replace(/\.0$/, "") +
+      "% completed";
+
+    $("pointsToUnlockBadge").textContent =
+      fmt(next - points) + " pts to unlock";
+
   } else {
-    document.getElementById('nextMilestoneTitle').textContent = 'All milestones unlocked!';
-    document.getElementById('progressPoints').innerHTML = '<strong>' + formatNumber(points) + ' pts</strong>';
-    document.getElementById('progressFill').style.width = '100%';
-    document.getElementById('progressPercentText').textContent = '100% completed';
-    document.getElementById('pointsToUnlockBadge').textContent = 'Max Milestone Reached';
+    $("nextMilestoneTitle").textContent =
+      "All milestones unlocked!";
+
+    $("progressPoints").innerHTML =
+      "<strong>" + fmt(points) + " pts</strong>";
+
+    $("progressFill").style.width = "100%";
+    $("progressPercentText").textContent = "100% completed";
+    $("pointsToUnlockBadge").textContent =
+      "Max milestone reached";
   }
+
+  renderWeekly(profile.weeklyPerformance, team);
+  updateCountdown();
 }
 
-function loadLeaderboard(userId, userRank) {
-  return new Promise((resolve, reject) => {
-    const callback = 'winterLeaderboard_' + Date.now() + '_' + Math.floor(Math.random() * 100000);
-    const script = document.createElement('script');
-    let finished = false;
-    let timer;
+/* ================= WEEKLY SNAPSHOT ================= */
 
-    function cleanup() {
-      if (timer) clearTimeout(timer);
-      if (script.parentNode) script.parentNode.removeChild(script);
-      try { delete window[callback]; } catch (e) { window[callback] = undefined; }
-    }
-    function success(data) {
-      if (finished) return;
-      finished = true;
-      cleanup();
-      if (!data || data.error) {
-        reject(new Error(data && data.error || 'Leaderboard API error.'));
-        return;
-      }
-      leaderboardData = Array.isArray(data.leaderboard) ? data.leaderboard : [];
-      renderLeaderboardAndRivals(leaderboardData, userId, userRank);
-      resolve(leaderboardData);
-    }
-    function fail() {
-      if (finished) return;
-      finished = true;
-      cleanup();
-      reject(new Error('Unable to load leaderboard.'));
-    }
+function dateLabel(value) {
+  if (!value) return "";
 
-    window[callback] = success;
-    script.onerror = fail;
-    script.src = API_URL + '?mode=leaderboard&callback=' + encodeURIComponent(callback) + '&_=' + Date.now();
-    document.body.appendChild(script);
-    timer = setTimeout(() => { if (!finished) fail(); }, 12000);
+  const date = new Date(value + "T12:00:00");
+
+  if (isNaN(date.getTime())) {
+    return value;
+  }
+
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    timeZone: "UTC"
   });
 }
 
-function renderLeaderboardAndRivals(rows, userId, userRank) {
-  const lbContainer = document.getElementById('leaderboardList');
-  const rivalsContainer = document.getElementById('rivalsList');
+function renderWeekly(weekly, team) {
+  const personal = weekly?.personal || null;
+  const teamData = weekly?.team || null;
 
-  if (!Array.isArray(rows) || !rows.length) {
-    lbContainer.innerHTML = '<div class="leaderboard-error">No leaderboard data available.</div>';
-    rivalsContainer.innerHTML = '<div class="leaderboard-error">No rivals data available.</div>';
+  function setDelta(valueId, rankId, item) {
+    if (!item || !item.available) {
+      $(valueId).textContent = "—";
+      $(rankId).textContent = "No previous snapshot";
+      $(rankId).className = "weekly-delta-badge";
+      return;
+    }
+
+    const pointsChange = Number(item.pointsChange || 0);
+    const rankChange = Number(item.rankChange || 0);
+
+    $(valueId).textContent =
+      signed(pointsChange) + " pts";
+
+    let label = "Rank unchanged";
+
+    if (rankChange > 0) {
+      label =
+        "▲ Improved " + rankChange +
+        " rank spot" + (rankChange === 1 ? "" : "s");
+    } else if (rankChange < 0) {
+      label =
+        "▼ Dropped " + Math.abs(rankChange) +
+        " rank spot" + (rankChange === -1 ? "" : "s");
+    }
+
+    $(rankId).textContent = label;
+
+    $(rankId).className =
+      "weekly-delta-badge" +
+      (pointsChange < 0 || rankChange < 0 ? " negative" : "");
+  }
+
+  setDelta(
+    "personalDelta",
+    "personalRankDelta",
+    personal
+  );
+
+  setDelta(
+    "teamDelta",
+    "teamRankDelta",
+    teamData
+  );
+
+  const source = personal || teamData;
+
+  if (source && source.fromDate && source.toDate) {
+    $("weeklyRange").textContent =
+      dateLabel(source.fromDate) +
+      " → " +
+      dateLabel(source.toDate);
+  } else {
+    $("weeklyRange").textContent =
+      "Compared with previous Monday snapshot";
+  }
+
+  if (!team) {
+    $("teamDelta").textContent = "N/A";
+    $("teamRankDelta").textContent = "Not in a team";
+  }
+}
+
+/* ================= LEADERBOARD API ================= */
+
+function loadLeaderboard() {
+  return new Promise((resolve, reject) => {
+    const callback =
+      "winterLeaderboard_" +
+      Date.now() + "_" +
+      Math.floor(Math.random() * 100000);
+
+    const script = document.createElement("script");
+
+    let finished = false;
+
+    const timer = setTimeout(fail, 15000);
+
+    function cleanup() {
+      clearTimeout(timer);
+
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
+
+      try {
+        delete window[callback];
+      } catch (_) {
+        window[callback] = undefined;
+      }
+    }
+
+    function fail() {
+      if (finished) return;
+
+      finished = true;
+      cleanup();
+
+      reject(new Error("Unable to load leaderboard."));
+    }
+
+    window[callback] = data => {
+      if (finished) return;
+
+      finished = true;
+      cleanup();
+
+      if (!data || data.error) {
+        reject(new Error(
+          data?.error || "Leaderboard API error."
+        ));
+        return;
+      }
+
+      leaderboardData =
+        Array.isArray(data.leaderboard)
+          ? data.leaderboard
+          : [];
+
+      renderBoard(leaderboardData);
+      resolve(leaderboardData);
+    };
+
+    script.onerror = fail;
+
+    script.src =
+      API_URL +
+      "?mode=leaderboard&callback=" +
+      encodeURIComponent(callback) +
+      "&_=" + Date.now();
+
+    document.body.appendChild(script);
+  });
+}
+
+/* ================= FIND OWN LEADERBOARD ENTRY ================= */
+
+function ownBoardEntry(rows) {
+  const team = currentUserData?.team;
+
+  if (team?.key) {
+    return rows.find(row =>
+      row.key === team.key ||
+      String(row.key) === "team:" + team.number
+    ) || null;
+  }
+
+  return rows.find(row =>
+    row.key === "email:" + currentUserId
+  ) || null;
+}
+
+/* ================= RENDER LEADERBOARD ================= */
+
+function renderBoard(rows) {
+  const list = rows
+    .map(row => ({
+      key: String(row.key || ""),
+      type: row.type || "individual",
+      email: String(row.email || row.name || "Participant"),
+      points: Number(row.points || 0),
+      rank: Number(row.rank || 0)
+    }))
+    .filter(row => row.rank > 0)
+    .sort((a, b) => a.rank - b.rank);
+
+  const own = ownBoardEntry(list);
+  const ownKey = own?.key || "";
+
+  const topTen = list.slice(0, TOP_COUNT);
+
+  $("leaderboardList").innerHTML = topTen.length
+    ? topTen.map(row => {
+        const isYou = row.key === ownKey;
+        const isFirst = row.rank === 1;
+
+        return `
+          <div class="leaderboard-row
+            ${isFirst ? "rank-1" : ""}
+            ${isYou ? "you" : ""}">
+
+            <div class="rank-pill">#${row.rank}</div>
+
+            <div
+              class="leaderboard-email"
+              title="${esc(row.email)}"
+            >${esc(row.email)}</div>
+
+            ${isYou
+              ? '<span class="you-badge">YOU</span>'
+              : '<span></span>'}
+          </div>
+        `;
+      }).join("")
+    : '<div class="leaderboard-error">No leaderboard data available.</div>';
+
+  if (own) {
+    $("rankGapTag").textContent =
+      own.rank === 1
+        ? "Leading the leaderboard"
+        : "Leaderboard rank #" + own.rank;
+  }
+
+  renderRivals(list, own);
+}
+
+/* ================= NEARBY RIVALS ================= */
+
+function renderRivals(list, own) {
+  if (!own) {
+    $("rivalsList").innerHTML =
+      '<div class="leaderboard-error">' +
+      "Your entry is not on the public leaderboard." +
+      "</div>";
+
     return;
   }
 
-  const normalized = rows.map(r => ({
-    email: String(r.email || 'Participant'),
-    units: Number(r.units || 0),
-    points: Number(r.points || 0),
-    rank: Number(r.rank || 0)
-  })).filter(r => r.rank > 0).sort((a, b) => a.rank - b.rank);
+  const index = list.findIndex(
+    row => row.key === own.key
+  );
 
-  const ownEmail = String(currentUserData && currentUserData.email || '').toLowerCase();
-  const userIndex = normalized.findIndex(r => r.email.toLowerCase() === ownEmail);
-  const userObj = userIndex >= 0 ? normalized[userIndex] : {
-    email: currentUserData ? currentUserData.email : userId,
-    points: Number(currentUserData && currentUserData.points || 0),
-    rank: Number(currentUserData && currentUserData.rank || userRank || 0)
-  };
+  const start = Math.max(0, index - 2);
+  const end = Math.min(list.length, index + 3);
 
-  if (userIndex > 0) {
-    const personAbove = normalized[userIndex - 1];
-    const diffAbove = Math.max(0, personAbove.points - userObj.points);
-    document.getElementById('rankGapTag').textContent =
-      '+' + formatNumber(diffAbove) + ' pts to #' + personAbove.rank;
-  } else if (userObj.rank === 1) {
-    document.getElementById('rankGapTag').textContent = 'Leading the Contest';
-  }
+  const nearby = list.slice(start, end);
 
-  if (userIndex >= 0) {
-    const startIdx = Math.max(0, userIndex - 2);
-    const endIdx = Math.min(normalized.length - 1, userIndex + 1);
-    const slice = normalized.slice(startIdx, endIdx + 1);
+  $("rivalsList").innerHTML = nearby.map(row => {
+    const isYou = row.key === own.key;
+    const difference = row.points - own.points;
 
-    let rivalsHtml = '';
-    slice.forEach(person => {
-      const isYou = person.email.toLowerCase() === ownEmail;
-      const diff = person.points - userObj.points;
-      let rightBadge = '';
+    let badge;
 
-      if (isYou) {
-        rightBadge = '<div class="gap-you">' + formatNumber(person.points) + ' pts</div>';
-      } else if (diff >= 0) {
-        rightBadge = '<div class="gap-pill gap-ahead">+' + formatNumber(diff) + ' pts</div>';
-      } else {
-        rightBadge = '<div class="gap-pill gap-behind">' + formatNumber(diff) + ' pts</div>';
-      }
+    if (isYou) {
+      badge =
+        `<span class="gap-you">${fmt(row.points)} pts</span>`;
+    } else if (difference > 0) {
+      badge =
+        `<span class="gap-pill gap-ahead">+${fmt(difference)} pts</span>`;
+    } else {
+      badge =
+        `<span class="gap-pill gap-behind">${fmt(difference)} pts</span>`;
+    }
 
-      rivalsHtml +=
-        '<div class="rival-row' + (isYou ? ' is-you' : '') + '">' +
-          '<div class="rival-rank">#' + person.rank + '</div>' +
-          '<div class="rival-user">' +
-            (isYou ? '<span class="you-badge">YOU</span>' : '') +
-            '<div class="rival-email" title="' + escapeHtml(person.email) + '">' + escapeHtml(person.email) + '</div>' +
-          '</div>' +
-          rightBadge +
-        '</div>';
-    });
-    rivalsContainer.innerHTML = rivalsHtml;
-  } else {
-    rivalsContainer.innerHTML =
-      '<div class="rival-row is-you">' +
-        '<div class="rival-rank">#' + userObj.rank + '</div>' +
-        '<div class="rival-user"><span class="you-badge">YOU</span><div class="rival-email">' + escapeHtml(userObj.email) + '</div></div>' +
-        '<div class="gap-you">' + formatNumber(userObj.points) + ' pts</div>' +
-      '</div>';
-  }
+    return `
+      <div class="rival-row ${isYou ? "is-you" : ""}">
+        <div class="rival-rank">#${row.rank}</div>
 
-  const top10 = normalized.filter(r => r.rank <= TOP_COUNT);
-  let lbHtml = '';
-  top10.forEach(r => {
-    const isYou = !!ownEmail && r.email.toLowerCase() === ownEmail;
-    const isFirst = r.rank === 1;
-    lbHtml +=
-      '<div class="leaderboard-row' + (isFirst ? ' rank-1' : '') + (isYou ? ' you' : '') + '">' +
-        '<div class="rank-pill">#' + r.rank + '</div>' +
-        '<div class="leaderboard-email" title="' + escapeHtml(r.email) + '">' + escapeHtml(r.email) + '</div>' +
-        (isYou ? '<span class="you-badge">YOU</span>' : '<span></span>') +
-      '</div>';
-  });
-  lbContainer.innerHTML = lbHtml || '<div class="leaderboard-error">No leaderboard data available.</div>';
+        <div class="rival-user">
+          ${isYou ? '<span class="you-badge">YOU</span>' : ""}
+
+          <div
+            class="rival-email"
+            title="${esc(row.email)}"
+          >${esc(row.email)}</div>
+        </div>
+
+        ${badge}
+      </div>
+    `;
+  }).join("");
 }
+
+/* ================= REFRESH ================= */
 
 async function refreshLeaderboard() {
-  const button = document.getElementById('refreshButton');
-  if (!currentUserId) return;
-  const old = button.textContent;
+  const button = $("refreshButton");
+
   button.disabled = true;
-  button.textContent = '…';
+  button.textContent = "…";
+
   try {
-    updateContestCountdown();
-    await loadLeaderboard(currentUserId, currentUserRank);
-  } catch (e) {
-    document.getElementById('leaderboardList').innerHTML =
-      '<div class="leaderboard-error">Unable to refresh leaderboard.</div>';
+    await loadLeaderboard();
+  } catch (error) {
+    $("leaderboardList").innerHTML =
+      '<div class="leaderboard-error">' +
+      "Unable to refresh leaderboard." +
+      "</div>";
   } finally {
     button.disabled = false;
-    button.textContent = old;
+    button.textContent = "↻";
   }
 }
 
+/* ================= LOGOUT ================= */
+
 function logout() {
-  currentUserId = '';
+  currentUserId = "";
   currentUserRank = 0;
   currentUserData = null;
   leaderboardData = [];
-  document.getElementById('dashboard').style.display = 'none';
-  document.getElementById('loginScreen').style.display = 'flex';
-  document.getElementById('emailInput').value = '';
-  document.getElementById('passcodeInput').value = '';
-  document.getElementById('loginError').textContent = '';
-  document.getElementById('leaderboardList').innerHTML =
+
+  $("dashboard").style.display = "none";
+  $("loginScreen").style.display = "flex";
+
+  $("emailInput").value = "";
+  $("passcodeInput").value = "";
+  $("loginError").textContent = "";
+
+  $("leaderboardList").innerHTML =
     '<div class="leaderboard-loading">Loading leaderboard...</div>';
-  document.getElementById('rivalsList').innerHTML =
+
+  $("rivalsList").innerHTML =
     '<div class="leaderboard-loading">Loading nearby competitors...</div>';
-  document.getElementById('pointsValue').textContent = '—';
-  document.getElementById('unitsValue').textContent = '—';
-  document.getElementById('rankValue').textContent = '—';
-  document.getElementById('progressFill').style.width = '0%';
+
+  ["pointsValue", "unitsValue", "rankValue"].forEach(id => {
+    $(id).textContent = "—";
+  });
+
+  $("progressFill").style.width = "0%";
 }
 
-function formatNumber(value) {
-  const n = Number(value || 0);
-  return Number.isFinite(n) ? n.toLocaleString('en-US') : '0';
-}
-
-function escapeHtml(value) {
-  return String(value || '').replace(/&/g, '&amp;').replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
-}
-
-updateContestCountdown();
+updateCountdown();
 </script>
 </body>
 </html>
