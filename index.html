@@ -223,6 +223,8 @@ button, input {
   cursor: pointer;
 }
 
+/* 2:1 DASHBOARD LAYOUT */
+
 .dashboard-grid {
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(350px, 1fr);
@@ -443,7 +445,22 @@ button, input {
   text-transform: uppercase;
 }
 
-.weekly-footer-note,
+/* NEW: small green date marker beside Weekly Snapshot */
+.weekly-footer-note {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 10px;
+  border-radius: 99px;
+  background: #e3f1e8;
+  border: 1px solid #c5dfce;
+  color: var(--green);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  white-space: nowrap;
+}
+
 .rivals-subtitle {
   font-size: 12px;
   font-weight: 600;
@@ -535,6 +552,32 @@ button, input {
   font-weight: 800;
   padding: 3px 8px;
   border-radius: 99px;
+}
+
+/* NEW: TEAM label */
+.leaderboard-name {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+
+.leaderboard-name .leaderboard-email {
+  min-width: 0;
+}
+
+.team-badge {
+  flex: 0 0 auto;
+  display: inline-block;
+  background: #F9EBBF;
+  color: #8F6914;
+  border: 1px solid #E8D595;
+  border-radius: 99px;
+  padding: 3px 7px;
+  font-size: 9px;
+  line-height: 1.2;
+  font-weight: 800;
+  letter-spacing: .04em;
 }
 
 .gap-pill {
@@ -722,12 +765,21 @@ button, input {
   }
 
   .weekly-header {
-    align-items: flex-start;
-    flex-direction: column;
+    align-items: center;
+    flex-direction: row;
   }
 
   .weekly-footer-note {
-    text-align: left;
+    text-align: center;
+    font-size: 9px;
+    padding: 5px 8px;
+  }
+}
+
+@media(max-width:380px) {
+  .weekly-header {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
 </style>
@@ -862,7 +914,7 @@ button, input {
           <div class="weekly-header">
             <h3 class="weekly-title">Weekly Snapshot</h3>
             <span id="weeklyRange" class="weekly-footer-note">
-              Compared with previous Monday snapshot
+              NOV 11 → NOV 16
             </span>
           </div>
 
@@ -1170,7 +1222,6 @@ function renderProfile(profile) {
   const points = Number(profile.points || 0);
   const units = Number(profile.units || 0);
   const rank = Number(profile.rank || 0);
-  const team = profile.team || null;
 
   $("scoreEmail").textContent = profile.email || "";
   $("pointsValue").textContent = fmt(points);
@@ -1221,7 +1272,9 @@ function renderProfile(profile) {
       "Max milestone reached";
   }
 
-  renderWeekly(profile.weeklyPerformance, team);
+  // UPDATED: backend returns one weeklyPerformance object
+  renderWeekly(profile.weeklyPerformance);
+
   updateCountdown();
 }
 
@@ -1230,30 +1283,44 @@ function renderProfile(profile) {
 function dateLabel(value) {
   if (!value) return "";
 
-  const date = new Date(value + "T12:00:00");
+  // Parse yyyy-mm-dd without local timezone shifting.
+  const match = String(value).match(/^(\d{4})-(\d{2})-(\d{2})/);
+
+  if (match) {
+    const date = new Date(
+      Date.UTC(
+        Number(match[1]),
+        Number(match[2]) - 1,
+        Number(match[3])
+      )
+    );
+
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      timeZone: "UTC"
+    }).toUpperCase();
+  }
+
+  const date = new Date(value);
 
   if (isNaN(date.getTime())) {
-    return value;
+    return String(value).toUpperCase();
   }
 
   return date.toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
     timeZone: "UTC"
-  });
+  }).toUpperCase();
 }
 
-function renderWeekly(weekly, team) {
-  // Team members use team comparison.
-  // Individual sellers use personal comparison.
-  const snapshot = team
-    ? (weekly?.team || null)
-    : (weekly?.personal || null);
-
+function renderWeekly(snapshot) {
   const pointsEl = $("weeklyPointsGained");
   const pointsNoteEl = $("weeklyPointsNote");
   const rankEl = $("weeklyRankMovement");
   const rankNoteEl = $("weeklyRankNote");
+  const rangeEl = $("weeklyRange");
 
   if (!snapshot || !snapshot.available) {
     pointsEl.textContent = "—";
@@ -1265,8 +1332,7 @@ function renderWeekly(weekly, team) {
     pointsNoteEl.className = "weekly-delta-badge";
     rankNoteEl.className = "weekly-delta-badge";
 
-    $("weeklyRange").textContent =
-      "Compared with previous Monday snapshot";
+    rangeEl.textContent = "NOV 11 → NOV 16";
 
     return;
   }
@@ -1274,7 +1340,8 @@ function renderWeekly(weekly, team) {
   const pointsChange = Number(snapshot.pointsChange || 0);
   const rankChange = Number(snapshot.rankChange || 0);
 
-  // POINTS GAINED
+  /* POINTS GAINED */
+
   pointsEl.textContent = signed(pointsChange) + " pts";
 
   pointsNoteEl.textContent =
@@ -1288,9 +1355,11 @@ function renderWeekly(weekly, team) {
     "weekly-delta-badge" +
     (pointsChange < 0 ? " negative" : "");
 
-  // RANK MOVEMENT
+  /* RANK MOVEMENT */
+
   if (rankChange > 0) {
     rankEl.textContent = "▲ " + rankChange;
+
     rankNoteEl.textContent =
       "Moved up " + rankChange +
       " place" + (rankChange === 1 ? "" : "s");
@@ -1299,6 +1368,7 @@ function renderWeekly(weekly, team) {
 
   } else if (rankChange < 0) {
     rankEl.textContent = "▼ " + Math.abs(rankChange);
+
     rankNoteEl.textContent =
       "Moved down " + Math.abs(rankChange) +
       " place" + (rankChange === -1 ? "" : "s");
@@ -1313,15 +1383,15 @@ function renderWeekly(weekly, team) {
     rankNoteEl.className = "weekly-delta-badge";
   }
 
-  // COMPARISON PERIOD
+  /* COMPARISON PERIOD */
+
   if (snapshot.fromDate && snapshot.toDate) {
-    $("weeklyRange").textContent =
+    rangeEl.textContent =
       dateLabel(snapshot.fromDate) +
       " → " +
       dateLabel(snapshot.toDate);
   } else {
-    $("weeklyRange").textContent =
-      "Compared with previous Monday snapshot";
+    rangeEl.textContent = "NOV 11 → NOV 16";
   }
 }
 
@@ -1437,6 +1507,7 @@ function renderBoard(rows) {
     ? topTen.map(row => {
         const isYou = row.key === ownKey;
         const isFirst = row.rank === 1;
+        const isTeam = row.type === "team";
 
         return `
           <div class="leaderboard-row
@@ -1445,10 +1516,16 @@ function renderBoard(rows) {
 
             <div class="rank-pill">#${row.rank}</div>
 
-            <div
-              class="leaderboard-email"
-              title="${esc(row.email)}"
-            >${esc(row.email)}</div>
+            <div class="leaderboard-name">
+              <div
+                class="leaderboard-email"
+                title="${esc(row.email)}"
+              >${esc(row.email)}</div>
+
+              ${isTeam
+                ? '<span class="team-badge">TEAM</span>'
+                : ''}
+            </div>
 
             ${isYou
               ? '<span class="you-badge">YOU</span>'
@@ -1570,6 +1647,12 @@ function logout() {
   ["pointsValue", "unitsValue", "rankValue"].forEach(id => {
     $(id).textContent = "—";
   });
+
+  $("weeklyPointsGained").textContent = "—";
+  $("weeklyPointsNote").textContent = "No previous snapshot";
+  $("weeklyRankMovement").textContent = "—";
+  $("weeklyRankNote").textContent = "No previous snapshot";
+  $("weeklyRange").textContent = "NOV 11 → NOV 16";
 
   $("progressFill").style.width = "0%";
 }
