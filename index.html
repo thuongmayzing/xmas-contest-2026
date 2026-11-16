@@ -242,6 +242,31 @@ button,input{font-family:inherit}
   background:#F9EBBF;padding:4px 9px;border-radius:99px
 }
 
+.weekly-performance{
+  margin-top:14px;padding:14px 16px;border-radius:16px;
+  background:var(--bg-subtle);border:1px solid #E3ECE5
+}
+.weekly-heading{
+  font-family:Montserrat,sans-serif;font-size:12px;font-weight:800;
+  color:var(--pine-dark);text-transform:uppercase;margin-bottom:10px
+}
+.weekly-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.weekly-metric{
+  min-width:0;padding:10px 12px;border-radius:12px;
+  background:#fff;border:1px solid #E5ECE6
+}
+.weekly-type{
+  font-size:10px;font-weight:800;color:var(--text-muted);
+  text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px
+}
+.weekly-values{display:flex;flex-wrap:wrap;gap:6px 12px}
+.weekly-value{font-size:12px;font-weight:800;color:var(--pine-dark)}
+.weekly-period{font-size:10px;font-weight:600;color:var(--text-muted);margin-top:6px;line-height:1.4}
+.team-rank-line{
+  margin-top:5px;font-size:11px;font-weight:800;color:var(--pine-main)
+}
+
+
 /* TEAM + RIVALS */
 .compact-panels{
   display:grid;
@@ -395,6 +420,7 @@ button,input{font-family:inherit}
   .compact-panels.no-team{grid-template-columns:1fr}
   .team-list{max-height:180px}
   .team-total-pts{font-size:22px}
+  .weekly-grid{grid-template-columns:1fr}
   .footer-bar{font-size:11px;line-height:1.4}
 }
 </style>
@@ -506,6 +532,28 @@ button,input{font-family:inherit}
               <span id="pointsToUnlockBadge" class="unlock-pill">— pts to unlock</span>
             </div>
           </div>
+
+          <div class="weekly-performance">
+            <div class="weekly-heading">Weekly Performance</div>
+            <div class="weekly-grid">
+              <div class="weekly-metric">
+                <div class="weekly-type">Personal</div>
+                <div class="weekly-values">
+                  <span id="personalWeeklyPoints" class="weekly-value">— pts</span>
+                  <span id="personalWeeklyRank" class="weekly-value">—</span>
+                </div>
+                <div id="personalWeeklyPeriod" class="weekly-period">No previous weekly data yet.</div>
+              </div>
+              <div id="teamWeeklyPanel" class="weekly-metric" style="display:none;">
+                <div class="weekly-type">Team</div>
+                <div class="weekly-values">
+                  <span id="teamWeeklyPoints" class="weekly-value">— pts</span>
+                  <span id="teamWeeklyRank" class="weekly-value">—</span>
+                </div>
+                <div id="teamWeeklyPeriod" class="weekly-period">No previous weekly data yet.</div>
+              </div>
+            </div>
+          </div>
         </section>
 
         <!-- TEAM SCORE + RIVALS -->
@@ -520,6 +568,7 @@ button,input{font-family:inherit}
             <div class="team-total-row">
               <div class="team-total-label">Total Team Points</div>
               <div id="teamTotalPoints" class="team-total-pts">—</div>
+              <div id="teamRankLine" class="team-rank-line">Team Rank: —</div>
             </div>
             <div id="teamList" class="team-list"></div>
           </section>
@@ -733,6 +782,7 @@ async function login(){
     updateContestCountdown();
     renderPersonalScore(result.profile);
     renderTeamScore(result.profile.team);
+    renderWeeklyPerformance(result.profile.weeklyPerformance, !!result.profile.team);
 
     document.getElementById("loginScreen").style.display = "none";
     document.getElementById("dashboard").style.display = "block";
@@ -769,6 +819,7 @@ function renderTeamScore(team){
   const card = document.getElementById("teamCard");
   const nameEl = document.getElementById("teamName");
   const totalEl = document.getElementById("teamTotalPoints");
+  const rankEl = document.getElementById("teamRankLine");
   const listEl = document.getElementById("teamList");
   const panels = document.getElementById("compactPanels");
 
@@ -776,6 +827,8 @@ function renderTeamScore(team){
     card.style.display = "none";
     panels.classList.add("no-team");
     listEl.innerHTML = "";
+    rankEl.textContent = "Team Rank: —";
+    document.getElementById("teamWeeklyPanel").style.display = "none";
     return;
   }
 
@@ -784,6 +837,7 @@ function renderTeamScore(team){
 
   nameEl.textContent = team.name || ("Team " + (team.number || ""));
   totalEl.textContent = formatNumber(team.totalPoints || 0) + " pts";
+  rankEl.textContent = team.rank ? "Team Rank: #" + formatNumber(team.rank) : "Team Rank: —";
 
   // Sort team members from highest points to lowest points.
   const members = [...team.members].sort(
@@ -798,6 +852,59 @@ function renderTeamScore(team){
       <span class="team-pts">${formatNumber(member.points || 0)} pts</span>
     </div>
   `).join("");
+}
+
+/* WEEKLY PERFORMANCE */
+function formatSignedNumber(value){
+  const n = Number(value || 0);
+  return (n > 0 ? "+" : "") + formatNumber(n);
+}
+
+function renderWeeklyMetric(pointsId, rankId, periodId, metric){
+  const pointsEl = document.getElementById(pointsId);
+  const rankEl = document.getElementById(rankId);
+  const periodEl = document.getElementById(periodId);
+
+  if(!metric || !metric.available){
+    pointsEl.textContent = "— pts";
+    rankEl.textContent = "—";
+    periodEl.textContent = "No previous weekly data yet.";
+    return;
+  }
+
+  pointsEl.textContent = formatSignedNumber(metric.pointsChange) + " pts";
+
+  if(metric.rankChange > 0){
+    rankEl.textContent = "↑ " + formatNumber(metric.rankChange) + " places";
+  }else if(metric.rankChange < 0){
+    rankEl.textContent = "↓ " + formatNumber(Math.abs(metric.rankChange)) + " places";
+  }else{
+    rankEl.textContent = "No rank change";
+  }
+
+  periodEl.textContent = metric.fromDate + " → " + metric.toDate;
+}
+
+function renderWeeklyPerformance(data, hasTeam){
+  const weekly = data || {};
+  renderWeeklyMetric(
+    "personalWeeklyPoints",
+    "personalWeeklyRank",
+    "personalWeeklyPeriod",
+    weekly.personal
+  );
+
+  const teamPanel = document.getElementById("teamWeeklyPanel");
+  teamPanel.style.display = hasTeam ? "block" : "none";
+
+  if(hasTeam){
+    renderWeeklyMetric(
+      "teamWeeklyPoints",
+      "teamWeeklyRank",
+      "teamWeeklyPeriod",
+      weekly.team
+    );
+  }
 }
 
 /* PERSONAL PERFORMANCE */
@@ -908,49 +1015,51 @@ function renderLeaderboardAndRivals(rows,userId,userRank){
   }
 
   const normalized = rows.map(r => ({
-    email:String(r.email || "Participant"),
+    key:String(r.key || ""),
+    type:String(r.type || "individual"),
+    name:String(r.name || r.email || "Participant"),
+    email:String(r.email || r.name || "Participant"),
     points:Number(r.points || 0),
     rank:Number(r.rank || 0)
   }))
   .filter(r => r.rank > 0)
   .sort((a,b) => a.rank - b.rank);
 
-  const ownEmail = String(currentUserData && currentUserData.email || "").toLowerCase();
+  const ownKey = currentUserData && currentUserData.team
+    ? String(currentUserData.team.key || ("team:" + currentUserData.team.number))
+    : "email:" + String(userId || "").toLowerCase();
 
-  const userIndex = normalized.findIndex(
-    r => r.email.toLowerCase() === ownEmail
-  );
+  const userIndex = normalized.findIndex(r => r.key === ownKey);
+  const isTeamUser = !!(currentUserData && currentUserData.team);
 
   const userObj = userIndex >= 0
     ? normalized[userIndex]
     : {
-        email:currentUserData ? currentUserData.email : userId,
-        points:Number(currentUserData && currentUserData.points || 0),
-        rank:Number(currentUserData && currentUserData.rank || userRank || 0)
+        key:ownKey,
+        type:isTeamUser ? "team" : "individual",
+        name:isTeamUser
+          ? String(currentUserData.team.name || "My Team")
+          : String(currentUserData && currentUserData.email || userId),
+        email:isTeamUser
+          ? String(currentUserData.team.name || "My Team")
+          : String(currentUserData && currentUserData.email || userId),
+        points:isTeamUser
+          ? Number(currentUserData.team.totalPoints || 0)
+          : Number(currentUserData && currentUserData.points || 0),
+        rank:isTeamUser
+          ? Number(currentUserData.team.rank || 0)
+          : Number(currentUserData && currentUserData.rank || userRank || 0)
       };
 
-  /* PERSONAL RANK GAP */
-  if(userIndex > 0){
-    const personAbove = normalized[userIndex - 1];
-    const diffAbove = Math.max(0,personAbove.points - userObj.points);
-
-    document.getElementById("rankGapTag").textContent =
-      "+" + formatNumber(diffAbove) + " pts to #" + personAbove.rank;
-
-  }else if(userObj.rank === 1){
-    document.getElementById("rankGapTag").textContent = "Leading the Contest";
-  }
-
-  /* RIVALS */
+  /* RIVALS: compare the user's public leaderboard entity (team or individual). */
   if(userIndex >= 0){
     const startIdx = Math.max(0,userIndex - 2);
     const endIdx = Math.min(normalized.length - 1,userIndex + 1);
     const nearby = normalized.slice(startIdx,endIdx + 1);
 
     rivalsContainer.innerHTML = nearby.map(person => {
-      const isYou = person.email.toLowerCase() === ownEmail;
+      const isYou = person.key === ownKey;
       const diff = person.points - userObj.points;
-
       let badge = "";
 
       if(isYou){
@@ -968,40 +1077,41 @@ function renderLeaderboardAndRivals(rows,userId,userRank){
           <div class="rival-rank">#${person.rank}</div>
           <div class="rival-user">
             ${isYou ? '<span class="you-badge">YOU</span>' : ""}
-            <div class="rival-email" title="${escapeHtml(person.email)}">
-              ${escapeHtml(person.email)}
+            <div class="rival-email" title="${escapeHtml(person.name)}">
+              ${escapeHtml(person.name)}
             </div>
           </div>
           ${badge}
         </div>
       `;
     }).join("");
-
   }else{
     rivalsContainer.innerHTML = `
       <div class="rival-row is-you">
-        <div class="rival-rank">#${userObj.rank}</div>
+        <div class="rival-rank">#${userObj.rank || "—"}</div>
         <div class="rival-user">
           <span class="you-badge">YOU</span>
-          <div class="rival-email">${escapeHtml(userObj.email)}</div>
+          <div class="rival-email">${escapeHtml(userObj.name)}</div>
         </div>
         <div class="gap-you">${formatNumber(userObj.points)} pts</div>
       </div>
     `;
   }
 
-  /* TOP 10 LEADERBOARD */
+  /* TOP 10 UNIFIED LEADERBOARD */
   const top10 = normalized.filter(r => r.rank <= TOP_COUNT);
 
   lbContainer.innerHTML = top10.map(r => {
-    const isYou = !!ownEmail && r.email.toLowerCase() === ownEmail;
+    const isYou = r.key === ownKey;
     const isFirst = r.rank === 1;
+    const kindLabel = r.type === "team" ? "TEAM" : "";
 
     return `
       <div class="leaderboard-row${isFirst ? " rank-1" : ""}${isYou ? " you" : ""}">
         <div class="rank-pill">#${r.rank}</div>
-        <div class="leaderboard-email" title="${escapeHtml(r.email)}">
-          ${escapeHtml(r.email)}
+        <div class="leaderboard-email" title="${escapeHtml(r.name)}">
+          ${escapeHtml(r.name)}
+          ${kindLabel ? '<span style="font-size:9px;color:#768D82;margin-left:5px;">' + kindLabel + '</span>' : ''}
         </div>
         ${isYou ? '<span class="you-badge">YOU</span>' : '<span></span>'}
       </div>
@@ -1053,6 +1163,11 @@ function logout(){
   document.getElementById("teamCard").style.display = "none";
   document.getElementById("compactPanels").classList.remove("no-team");
   document.getElementById("teamList").innerHTML = "";
+  document.getElementById("teamRankLine").textContent = "Team Rank: —";
+  document.getElementById("personalWeeklyPoints").textContent = "— pts";
+  document.getElementById("personalWeeklyRank").textContent = "—";
+  document.getElementById("personalWeeklyPeriod").textContent = "No previous weekly data yet.";
+  document.getElementById("teamWeeklyPanel").style.display = "none";
 
   document.getElementById("pointsValue").textContent = "—";
   document.getElementById("unitsValue").textContent = "—";
