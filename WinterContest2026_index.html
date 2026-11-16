@@ -1,0 +1,1182 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mayzing — Christmas Contest 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg-page:#EEF2EC;
+  --bg-card:#fff;
+  --bg-subtle:#F6F8F5;
+  --bg-gold-soft:#FDF9EC;
+  --pine-dark:#0E422E;
+  --pine-main:#14533C;
+  --pine-light:#E4EDE8;
+  --gold-main:#E5C158;
+  --gold-border:#E8D595;
+  --gold-text:#8F6914;
+  --text-primary:#0E422E;
+  --text-secondary:#4A665A;
+  --text-muted:#768D82;
+  --border-card:#DCE4DC;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;min-height:100%}
+body{
+  font-family:Inter,sans-serif;
+  background:var(--bg-page);
+  color:var(--text-primary);
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased
+}
+button,input{font-family:inherit}
+.app{min-height:100vh;width:100%;display:flex;flex-direction:column}
+
+/* LOGIN */
+.login-screen{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px
+}
+.login-card{
+  width:100%;
+  max-width:430px;
+  background:#fff;
+  border-radius:24px;
+  padding:36px 28px;
+  box-shadow:0 20px 50px rgba(14,66,46,.08);
+  border:1px solid var(--border-card);
+  text-align:center
+}
+.login-brand{
+  font-family:Montserrat,sans-serif;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.22em;
+  color:var(--pine-main);
+  text-transform:uppercase;
+  margin-bottom:12px
+}
+.login-icon{
+  width:72px;height:72px;margin:0 auto 18px;
+  border-radius:20px;display:flex;align-items:center;
+  justify-content:center;background:var(--pine-light);
+  border:1px solid #CFE0D6
+}
+.login-title,.brand-title,.section-heading,.rank-value,
+.score-number,.leaderboard-title{font-family:Montserrat,sans-serif}
+.login-title{
+  font-size:26px;font-weight:800;color:var(--pine-dark);
+  margin-bottom:8px
+}
+.login-subtitle{
+  color:var(--text-secondary);font-size:14px;
+  line-height:1.55;margin-bottom:24px
+}
+.input-label{
+  display:block;text-align:left;margin-bottom:7px;
+  font-size:13px;font-weight:700;color:var(--pine-dark)
+}
+.login-input{
+  width:100%;height:50px;border-radius:14px;
+  border:1px solid #CBD8CE;background:var(--bg-subtle);
+  padding:0 16px;outline:none;color:var(--pine-dark);
+  font-size:14px;margin-bottom:14px;transition:all .2s
+}
+.login-input:focus{
+  background:#fff;border-color:var(--pine-main);
+  box-shadow:0 0 0 4px rgba(20,83,60,.12)
+}
+.login-button{
+  width:100%;height:50px;border:0;border-radius:14px;
+  background:var(--pine-dark);color:#fff;font-size:15px;
+  font-weight:700;cursor:pointer;margin-top:4px
+}
+.login-button:hover{background:var(--pine-main)}
+.login-button:disabled{opacity:.65;cursor:wait}
+.login-error{
+  min-height:20px;margin-top:12px;font-size:13px;
+  color:#C53030;font-weight:600
+}
+
+/* DASHBOARD */
+.dashboard{display:none;min-height:100vh;padding:28px 24px 36px}
+.dashboard-container{max-width:1360px;margin:0 auto;width:100%}
+.top-header{
+  position:relative;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  padding:12px 110px 26px
+}
+.brand-kicker{
+  font-family:Montserrat,sans-serif;font-size:12px;
+  font-weight:800;letter-spacing:.26em;color:var(--pine-main);
+  text-transform:uppercase;margin-bottom:6px
+}
+.title-row{display:flex;align-items:center;justify-content:center;gap:16px}
+.brand-title{
+  font-size:34px;font-weight:900;color:var(--pine-dark);
+  letter-spacing:-.02em;line-height:1.15
+}
+.brand-dates{
+  margin-top:8px;font-size:13px;font-weight:700;
+  color:var(--text-secondary);background:rgba(255,255,255,.72);
+  border:1px solid var(--border-card);padding:5px 14px;
+  border-radius:99px;display:inline-flex;align-items:center;gap:6px
+}
+.xmas-tree-svg{width:44px;height:52px;flex-shrink:0}
+.logout-button{
+  position:absolute;top:12px;right:0;border:1px solid #CBD8CE;
+  background:#fff;color:var(--pine-dark);padding:9px 16px;
+  border-radius:12px;font-size:12px;font-weight:700;cursor:pointer
+}
+.logout-button:hover{background:var(--pine-light);border-color:var(--pine-main)}
+
+/* GRID */
+.dashboard-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1.75fr) minmax(280px,.75fr);
+  gap:22px;
+  align-items:start
+}
+.left-column{display:flex;flex-direction:column;gap:14px}
+.card{
+  background:var(--bg-card);border-radius:22px;
+  border:1px solid var(--border-card);
+  box-shadow:0 12px 32px rgba(14,66,46,.05);min-width:0
+}
+
+/* PERSONAL PERFORMANCE - COMPACT VERSION */
+.score-card{padding:20px 22px}
+.perf-header{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  gap:12px;padding-bottom:13px;border-bottom:1px solid #E8EFE9;
+  margin-bottom:14px
+}
+.section-heading{
+  font-size:22px;font-weight:800;color:var(--pine-dark);
+  letter-spacing:-.01em;text-transform:uppercase
+}
+.score-email{
+  font-size:12px;font-weight:500;color:var(--text-muted);
+  margin-top:3px;word-break:break-all
+}
+.countdown-pill{
+  background:var(--pine-dark);color:#fff;padding:7px 12px;
+  border-radius:99px;font-size:11px;font-weight:700;
+  white-space:nowrap;display:inline-flex;align-items:center;
+  gap:6px;flex-shrink:0
+}
+.countdown-dot{width:7px;height:7px;border-radius:50%;background:var(--gold-main)}
+.metrics-split{
+  display:grid;grid-template-columns:1.15fr .85fr;
+  gap:12px;margin-bottom:14px
+}
+.rank-hero-box{
+  padding:15px 17px;border-radius:16px;
+  background:linear-gradient(145deg,var(--pine-dark),var(--pine-main));
+  color:#fff;display:flex;flex-direction:column;
+  justify-content:space-between;min-height:126px
+}
+.rank-hero-label{
+  font-size:10px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:#B6D3C6
+}
+.rank-value{
+  font-size:40px;font-weight:900;color:#fff;
+  line-height:1.05;margin:6px 0
+}
+.rank-gap-tag{
+  display:inline-flex;align-items:center;align-self:flex-start;
+  background:rgba(229,193,88,.2);
+  border:1px solid rgba(229,193,88,.55);color:#FDE68A;
+  font-size:11px;font-weight:700;padding:4px 9px;border-radius:99px
+}
+.sub-metrics-stack{display:flex;flex-direction:column;gap:9px}
+.score-box{
+  flex:1;padding:11px 15px;border-radius:14px;
+  background:var(--bg-subtle);border:1px solid #E3ECE5;
+  display:flex;flex-direction:column;justify-content:center
+}
+.score-box-label{
+  font-size:10px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.05em;color:var(--text-muted);margin-bottom:3px
+}
+.score-number{
+  font-size:25px;font-weight:800;color:var(--pine-dark);line-height:1.1
+}
+.score-unit{font-size:12px;font-weight:700;color:var(--text-secondary);margin-left:3px}
+
+/* MILESTONE */
+.milestone-box{
+  padding:14px 17px;border-radius:16px;
+  background:var(--bg-gold-soft);border:1px solid var(--gold-border)
+}
+.milestone-top{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:10px;margin-bottom:8px;flex-wrap:wrap
+}
+.milestone-title{font-size:13px;font-weight:800;color:var(--pine-dark)}
+.milestone-ratio{font-size:12px;font-weight:700;color:var(--text-secondary)}
+.milestone-ratio strong{color:var(--pine-dark);font-weight:800}
+.progress-track{width:100%;height:9px;border-radius:99px;background:#EAE2C6;overflow:hidden}
+.progress-fill{
+  height:100%;width:0%;border-radius:99px;
+  background:linear-gradient(90deg,var(--pine-main),#237A57);
+  transition:width .6s
+}
+.milestone-bottom{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:10px;margin-top:8px
+}
+.milestone-percent{font-size:11px;font-weight:700;color:var(--text-secondary)}
+.unlock-pill{
+  font-size:11px;font-weight:800;color:var(--gold-text);
+  background:#F9EBBF;padding:4px 9px;border-radius:99px
+}
+
+.weekly-performance{
+  margin-top:14px;padding:14px 16px;border-radius:16px;
+  background:var(--bg-subtle);border:1px solid #E3ECE5
+}
+.weekly-heading{
+  font-family:Montserrat,sans-serif;font-size:12px;font-weight:800;
+  color:var(--pine-dark);text-transform:uppercase;margin-bottom:10px
+}
+.weekly-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.weekly-metric{
+  min-width:0;padding:10px 12px;border-radius:12px;
+  background:#fff;border:1px solid #E5ECE6
+}
+.weekly-type{
+  font-size:10px;font-weight:800;color:var(--text-muted);
+  text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px
+}
+.weekly-values{display:flex;flex-wrap:wrap;gap:6px 12px}
+.weekly-value{font-size:12px;font-weight:800;color:var(--pine-dark)}
+.weekly-period{font-size:10px;font-weight:600;color:var(--text-muted);margin-top:6px;line-height:1.4}
+.team-rank-line{
+  margin-top:5px;font-size:11px;font-weight:800;color:var(--pine-main)
+}
+
+
+/* TEAM + RIVALS */
+.compact-panels{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:14px;
+  align-items:stretch
+}
+/* When user has no team, Rivals takes the full available width */
+.compact-panels.no-team{grid-template-columns:minmax(0,1fr)}
+.team-card,.rivals-card{padding:17px;min-width:0;height:100%}
+.team-header,.rivals-header{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:8px;margin-bottom:12px;min-height:24px
+}
+.team-title,.rivals-title{
+  font-family:Montserrat,sans-serif;font-size:14px;
+  font-weight:800;color:var(--pine-dark);text-transform:uppercase
+}
+.team-name{font-size:11px;color:var(--text-muted);font-weight:600;margin-top:3px}
+.team-total-row{
+  padding:12px;margin-bottom:10px;border-radius:12px;
+  background:var(--bg-gold-soft);border:1px solid var(--gold-border)
+}
+.team-total-label{
+  font-size:10px;font-weight:800;color:var(--gold-text);
+  text-transform:uppercase;letter-spacing:.04em
+}
+.team-total-pts{
+  font-family:Montserrat,sans-serif;font-size:24px;
+  line-height:1.2;font-weight:900;color:var(--pine-dark);
+  margin-top:3px;overflow-wrap:anywhere
+}
+.team-list{
+  display:flex;flex-direction:column;gap:5px;
+  max-height:150px;overflow-y:auto;padding-right:2px
+}
+.team-row{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:8px;padding:7px 9px;border-radius:9px;
+  background:var(--bg-subtle);border:1px solid #E5ECE6;
+  font-size:11px;min-width:0
+}
+.team-email{
+  font-weight:700;color:var(--pine-dark);overflow:hidden;
+  white-space:nowrap;text-overflow:ellipsis;min-width:0
+}
+.team-pts{font-weight:800;color:var(--pine-main);white-space:nowrap;flex-shrink:0}
+.rivals-subtitle{font-size:10px;font-weight:600;color:var(--text-muted);white-space:nowrap}
+.rivals-list{display:flex;flex-direction:column;gap:5px}
+
+/* RIVALS */
+.rival-row{
+  display:flex;align-items:center;gap:7px;padding:8px 9px;
+  border-radius:10px;background:var(--bg-subtle);
+  border:1px solid #E5ECE6;min-width:0
+}
+.rival-row.is-you{background:var(--pine-light);border:1.5px solid var(--pine-main)}
+.rival-rank{
+  flex:0 0 27px;font-family:Montserrat,sans-serif;
+  font-size:11px;font-weight:800;color:var(--text-secondary);white-space:nowrap
+}
+.rival-row.is-you .rival-rank{color:var(--pine-dark)}
+.rival-user{display:flex;align-items:center;gap:5px;min-width:0;flex:1}
+.rival-email{
+  font-size:10px;font-weight:700;color:var(--pine-dark);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0
+}
+.you-badge{
+  background:var(--pine-dark);color:#fff;font-size:8px;
+  font-weight:800;padding:2px 5px;border-radius:99px;
+  letter-spacing:.03em;flex-shrink:0
+}
+.gap-pill,.gap-you{
+  margin-left:auto;font-size:9px;font-weight:800;
+  padding:3px 6px;border-radius:99px;white-space:nowrap;flex-shrink:0
+}
+.gap-ahead{background:#E3F1E8;color:#14533C}
+.gap-behind{background:#FDECEC;color:#B83232}
+.gap-you{color:var(--pine-main);background:rgba(255,255,255,.65)}
+
+/* LEADERBOARD */
+.leaderboard-card{padding:22px}
+.leaderboard-header{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;margin-bottom:16px
+}
+.leaderboard-title{font-size:22px;font-weight:800;color:var(--pine-dark)}
+.leaderboard-subtitle{font-size:12px;font-weight:600;color:var(--text-muted);margin-top:3px}
+.last-updated-at{margin-top:5px;font-size:10px;font-weight:600;color:var(--text-muted);line-height:1.4}
+.refresh-button{
+  width:38px;height:38px;border-radius:12px;
+  border:1px solid #CBD8CE;background:#fff;color:var(--pine-dark);
+  cursor:pointer;font-size:16px;font-weight:700;flex-shrink:0
+}
+.refresh-button:hover{background:var(--pine-light);border-color:var(--pine-main)}
+.refresh-button:disabled{opacity:.6;cursor:wait}
+.leaderboard-list{display:flex;flex-direction:column;gap:8px}
+.leaderboard-row{
+  display:grid;grid-template-columns:38px minmax(0,1fr) auto;
+  align-items:center;gap:8px;min-height:48px;padding:8px 10px;
+  border-radius:14px;background:var(--bg-subtle);border:1px solid #E5ECE6
+}
+.leaderboard-row.rank-1{background:var(--bg-gold-soft);border-color:var(--gold-border)}
+.leaderboard-row.you{background:var(--pine-light);border:1.5px solid var(--pine-main)}
+.rank-pill{
+  font-family:Montserrat,sans-serif;font-size:12px;font-weight:800;
+  text-align:center;padding:5px 0;border-radius:9px;
+  background:var(--pine-dark);color:#fff
+}
+.leaderboard-row.rank-1 .rank-pill{background:var(--gold-main);color:var(--pine-dark)}
+.leaderboard-email{
+  font-size:12px;font-weight:700;color:var(--pine-dark);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+}
+.leaderboard-loading,.leaderboard-error{padding:28px 12px;text-align:center;font-size:13px}
+.leaderboard-loading{color:var(--text-muted)}
+.leaderboard-error{color:#C53030;font-weight:600}
+
+/* FOOTER */
+.footer-bar{
+  margin-top:28px;background:var(--pine-dark);color:#DCE8E1;
+  padding:12px 18px;border-radius:14px;text-align:center;
+  font-size:12px;font-weight:600;display:flex;
+  align-items:center;justify-content:center;gap:8px
+}
+
+/* RESPONSIVE */
+@media(max-width:920px){
+  .dashboard-grid{grid-template-columns:1fr}
+  .top-header{padding:46px 10px 22px}
+  .logout-button{top:0;right:0}
+}
+@media(max-width:600px){
+  .dashboard{padding:14px 14px 28px}
+  .brand-title{font-size:23px}
+  .title-row{gap:8px}
+  .xmas-tree-svg{width:32px;height:38px}
+  .brand-dates{font-size:12px;padding:4px 12px}
+  .score-card,.team-card,.rivals-card,.leaderboard-card{
+    padding:18px 16px;border-radius:18px
+  }
+  .perf-header{flex-direction:column;align-items:flex-start;gap:10px}
+  .section-heading{font-size:20px}
+  .metrics-split{grid-template-columns:1fr}
+  .rank-hero-box{min-height:auto;padding:18px}
+  .rank-value{font-size:38px}
+  .sub-metrics-stack{flex-direction:row}
+  .score-box{padding:14px}
+  .score-number{font-size:24px}
+  .compact-panels{grid-template-columns:1fr;gap:12px}
+  .compact-panels.no-team{grid-template-columns:1fr}
+  .team-list{max-height:180px}
+  .team-total-pts{font-size:22px}
+  .weekly-grid{grid-template-columns:1fr}
+  .footer-bar{font-size:11px;line-height:1.4}
+}
+</style>
+</head>
+
+<body>
+<iframe id="loginTransport" name="loginTransport" title="Login transport" style="display:none"></iframe>
+
+<div class="app">
+
+<!-- LOGIN SCREEN -->
+<section id="loginScreen" class="login-screen">
+  <div class="login-card">
+    <div class="login-brand">Mayzing</div>
+    <div class="login-icon">
+      <svg width="36" height="42" viewBox="0 0 44 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M22 2L23.8 6.2L28.4 6.6L24.9 9.6L26 14.1L22 11.7L18 14.1L19.1 9.6L15.6 6.6L20.2 6.2L22 2Z" fill="#E5C158"/>
+        <path d="M22 11L33 24H27.5L36.5 35H29.5L39 45H5L14.5 35H7.5L16.5 24H11L22 11Z" fill="#0E422E"/>
+        <rect x="19" y="45" width="6" height="5" rx="1" fill="#7C5832"/>
+        <circle cx="19" cy="21" r="1.6" fill="#FDE68A"/>
+        <circle cx="25.5" cy="28" r="1.7" fill="#E5C158"/>
+        <circle cx="16.5" cy="33" r="1.6" fill="#FDE68A"/>
+        <circle cx="26.5" cy="40" r="1.8" fill="#E5C158"/>
+      </svg>
+    </div>
+    <h1 class="login-title">Christmas Contest 2026</h1>
+    <p class="login-subtitle">Sign in with your registered email and passcode to track your contest ranking.</p>
+    <label class="input-label" for="emailInput">Email</label>
+    <input id="emailInput" class="login-input" type="email" placeholder="name@example.com" autocomplete="username" spellcheck="false">
+    <label class="input-label" for="passcodeInput">Passcode</label>
+    <input id="passcodeInput" class="login-input" type="password" placeholder="Enter your private passcode" autocomplete="current-password">
+    <button id="loginButton" class="login-button" type="button" onclick="login()">Log In</button>
+    <div id="loginError" class="login-error"></div>
+  </div>
+</section>
+
+<!-- DASHBOARD -->
+<section id="dashboard" class="dashboard">
+  <div class="dashboard-container">
+    <header class="top-header">
+      <button class="logout-button" type="button" onclick="logout()">Logout</button>
+      <div class="brand-kicker">Mayzing</div>
+      <div class="title-row">
+        <svg class="xmas-tree-svg" viewBox="0 0 44 52" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M22 2L23.8 6.2L28.4 6.6L24.9 9.6L26 14.1L22 11.7L18 14.1L19.1 9.6L15.6 6.6L20.2 6.2L22 2Z" fill="#E5C158"/>
+          <path d="M22 11L33 24H27.5L36.5 35H29.5L39 45H5L14.5 35H7.5L16.5 24H11L22 11Z" fill="#0E422E"/>
+          <rect x="19" y="45" width="6" height="5" rx="1" fill="#7C5832"/>
+          <circle cx="19.5" cy="21" r="1.5" fill="#FDE68A"/>
+          <circle cx="25" cy="28.5" r="1.6" fill="#E5C158"/>
+          <circle cx="16.5" cy="33.5" r="1.5" fill="#FDE68A"/>
+          <circle cx="26" cy="40.5" r="1.6" fill="#E5C158"/>
+        </svg>
+        <h1 class="brand-title">Christmas Contest 2026</h1>
+        <svg class="xmas-tree-svg" viewBox="0 0 44 52" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M22 2L23.8 6.2L28.4 6.6L24.9 9.6L26 14.1L22 11.7L18 14.1L19.1 9.6L15.6 6.6L20.2 6.2L22 2Z" fill="#E5C158"/>
+          <path d="M22 11L33 24H27.5L36.5 35H29.5L39 45H5L14.5 35H7.5L16.5 24H11L22 11Z" fill="#0E422E"/>
+          <rect x="19" y="45" width="6" height="5" rx="1" fill="#7C5832"/>
+          <circle cx="24.5" cy="21" r="1.5" fill="#FDE68A"/>
+          <circle cx="18.5" cy="28.5" r="1.6" fill="#E5C158"/>
+          <circle cx="27" cy="33.5" r="1.5" fill="#FDE68A"/>
+          <circle cx="17.5" cy="40.5" r="1.6" fill="#E5C158"/>
+        </svg>
+      </div>
+      <div class="brand-dates">Sep 30 – Dec 31 (GMT)</div>
+    </header>
+
+    <main class="dashboard-grid">
+      <div class="left-column">
+
+        <!-- PERSONAL PERFORMANCE -->
+        <section class="card score-card">
+          <div class="perf-header">
+            <div>
+              <h2 class="section-heading">My Performance</h2>
+              <div id="scoreEmail" class="score-email">Loading...</div>
+            </div>
+            <div id="countdownBadge" class="countdown-pill">
+              <span class="countdown-dot"></span>
+              <span id="daysLeftText">— days left</span>
+            </div>
+          </div>
+
+          <div class="metrics-split">
+            <div class="rank-hero-box">
+              <div class="rank-hero-label">Current Rank</div>
+              <div id="rankValue" class="rank-value">—</div>
+              <div id="rankGapTag" class="rank-gap-tag">Calculating gap...</div>
+            </div>
+            <div class="sub-metrics-stack">
+              <div class="score-box">
+                <div class="score-box-label">Total Points</div>
+                <div><span id="pointsValue" class="score-number">—</span><span class="score-unit">pts</span></div>
+              </div>
+              <div class="score-box">
+                <div class="score-box-label">Units</div>
+                <div><span id="unitsValue" class="score-number">—</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="milestone-box">
+            <div class="milestone-top">
+              <div id="nextMilestoneTitle" class="milestone-title">Next milestone: — points</div>
+              <div id="progressPoints" class="milestone-ratio">—</div>
+            </div>
+            <div class="progress-track"><div id="progressFill" class="progress-fill"></div></div>
+            <div class="milestone-bottom">
+              <span id="progressPercentText" class="milestone-percent">0% completed</span>
+              <span id="pointsToUnlockBadge" class="unlock-pill">— pts to unlock</span>
+            </div>
+          </div>
+
+          <div class="weekly-performance">
+            <div class="weekly-heading">Weekly Performance</div>
+            <div class="weekly-grid">
+              <div class="weekly-metric">
+                <div class="weekly-type">Personal</div>
+                <div class="weekly-values">
+                  <span id="personalWeeklyPoints" class="weekly-value">— pts</span>
+                  <span id="personalWeeklyRank" class="weekly-value">—</span>
+                </div>
+                <div id="personalWeeklyPeriod" class="weekly-period">No previous weekly data yet.</div>
+              </div>
+              <div id="teamWeeklyPanel" class="weekly-metric" style="display:none;">
+                <div class="weekly-type">Team</div>
+                <div class="weekly-values">
+                  <span id="teamWeeklyPoints" class="weekly-value">— pts</span>
+                  <span id="teamWeeklyRank" class="weekly-value">—</span>
+                </div>
+                <div id="teamWeeklyPeriod" class="weekly-period">No previous weekly data yet.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TEAM SCORE + RIVALS -->
+        <div id="compactPanels" class="compact-panels">
+          <section id="teamCard" class="card team-card" style="display:none;">
+            <div class="team-header">
+              <div>
+                <h3 class="team-title">Team Score</h3>
+                <div id="teamName" class="team-name">—</div>
+              </div>
+            </div>
+            <div class="team-total-row">
+              <div class="team-total-label">Total Team Points</div>
+              <div id="teamTotalPoints" class="team-total-pts">—</div>
+              <div id="teamRankLine" class="team-rank-line">Team Rank: —</div>
+            </div>
+            <div id="teamList" class="team-list"></div>
+          </section>
+
+          <section class="card rivals-card">
+            <div class="rivals-header">
+              <h3 class="rivals-title">Rivals</h3>
+              <span class="rivals-subtitle">Point gap</span>
+            </div>
+            <div id="rivalsList" class="rivals-list">
+              <div class="leaderboard-loading">Loading rivals...</div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- LEADERBOARD -->
+      <section class="card leaderboard-card">
+        <div class="leaderboard-header">
+          <div>
+            <h2 class="leaderboard-title">Leaderboard</h2>
+            <div class="leaderboard-subtitle">Top 10 Standings</div>
+            <div id="lastUpdatedAt" class="last-updated-at">Last updated: —</div>
+          </div>
+          <button id="refreshButton" class="refresh-button" type="button" onclick="refreshLeaderboard()" title="Refresh leaderboard">↻</button>
+        </div>
+        <div id="leaderboardList" class="leaderboard-list">
+          <div class="leaderboard-loading">Loading leaderboard...</div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer-bar">
+      <span>This invite-only communication is private and confidential and must not be shared externally.</span>
+    </footer>
+  </div>
+</section>
+</div>
+
+<script>
+/* CONFIG */
+const API_URL = "https://script.google.com/macros/s/AKfycbzEhuxZPljx4Nyn46aEOduEJDVhbUbRGtxbEZE8_cCL5WV1-4NAoNyqi_X45kBe5TVp3g/exec";
+
+let currentUserId = "";
+let currentUserRank = 0;
+let currentUserData = null;
+let leaderboardData = [];
+
+const TOP_COUNT = 10;
+const MILESTONES = [
+  250,500,1000,2500,5000,
+  10000,25000,50000,100000,125000
+];
+
+/* COMMON HELPERS */
+function getNextMilestone(points){
+  return MILESTONES.find(m => points < m) || null;
+}
+
+function getPreviousMilestone(points){
+  let prev = 0;
+  for(const m of MILESTONES){
+    if(points >= m) prev = m;
+    else break;
+  }
+  return prev;
+}
+
+function formatNumber(value){
+  const n = Number(value || 0);
+  return Number.isFinite(n) ? n.toLocaleString("en-US") : "0";
+}
+
+function escapeHtml(value){
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+/* COUNTDOWN */
+function updateContestCountdown(){
+  const endDate = new Date("2026-12-31T23:59:59Z");
+  const daysLeft = Math.max(
+    0,
+    Math.ceil((endDate - new Date()) / (1000 * 60 * 60 * 24))
+  );
+  const el = document.getElementById("daysLeftText");
+  if(el){
+    el.textContent = daysLeft === 1 ? "1 day left" : daysLeft + " days left";
+  }
+}
+
+/* LAST UPDATED */
+function updateLastUpdatedAt(timestamp){
+  const el = document.getElementById("lastUpdatedAt");
+  if(!el) return;
+
+  if(!timestamp){
+    el.textContent = "Last updated: Not available";
+    return;
+  }
+
+  const date = new Date(timestamp);
+  if(isNaN(date.getTime())){
+    el.textContent = "Last updated: Not available";
+    return;
+  }
+
+  const formatted = date.toLocaleString("en-GB", {
+    timeZone:"Asia/Ho_Chi_Minh",
+    day:"2-digit",
+    month:"short",
+    year:"numeric",
+    hour:"2-digit",
+    minute:"2-digit",
+    second:"2-digit",
+    hour12:false
+  });
+
+  el.textContent = "Last updated: " + formatted + " (GMT+7)";
+}
+
+/* LOGIN TRANSPORT */
+function postLogin(email, passcode){
+  return new Promise((resolve, reject) => {
+    const nonce = "wc_" + Date.now() + "_" + Math.random().toString(36).slice(2);
+    let done = false;
+    const timer = setTimeout(() => finish(null), 12000);
+
+    function finish(data){
+      if(done) return;
+      done = true;
+      clearTimeout(timer);
+      window.removeEventListener("message", onMessage);
+
+      if(data) resolve(data);
+      else reject(new Error("Unable to receive login response. Please try again."));
+    }
+
+    function onMessage(event){
+      let data = event.data;
+      if(typeof data === "string"){
+        try{data = JSON.parse(data)}catch(e){return}
+      }
+      if(!data || typeof data !== "object" || data.nonce !== nonce) return;
+      finish(data);
+    }
+
+    window.addEventListener("message", onMessage);
+
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = API_URL;
+    form.target = "loginTransport";
+    form.style.display = "none";
+
+    [
+      ["action","login"],
+      ["email",email],
+      ["passcode",passcode],
+      ["nonce",nonce]
+    ].forEach(([key,value]) => {
+      const input = document.createElement("input");
+      input.type = "hidden";
+      input.name = key;
+      input.value = value;
+      form.appendChild(input);
+    });
+
+    document.body.appendChild(form);
+    try{form.submit()}catch(err){finish(null)}
+    form.remove();
+  });
+}
+
+/* LOGIN */
+async function login(){
+  const emailEl = document.getElementById("emailInput");
+  const passEl = document.getElementById("passcodeInput");
+  const button = document.getElementById("loginButton");
+  const error = document.getElementById("loginError");
+
+  const email = String(emailEl.value || "").trim().toLowerCase();
+  const passcode = String(passEl.value || "").trim();
+
+  error.textContent = "";
+
+  if(!email || !passcode){
+    error.textContent = "Please enter both email and passcode.";
+    (!email ? emailEl : passEl).focus();
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "Checking...";
+
+  try{
+    const result = await postLogin(email, passcode);
+
+    if(!result || !result.ok){
+      throw new Error(result && result.error ? result.error : "Incorrect email or passcode.");
+    }
+
+    currentUserData = result.profile;
+    currentUserRank = Number(result.profile.rank || 0);
+    currentUserId = email;
+
+    updateContestCountdown();
+    renderPersonalScore(result.profile);
+    renderTeamScore(result.profile.team);
+    renderWeeklyPerformance(result.profile.weeklyPerformance, !!result.profile.team);
+
+    document.getElementById("loginScreen").style.display = "none";
+    document.getElementById("dashboard").style.display = "block";
+
+    loadLeaderboard(currentUserId, currentUserRank).catch(err => {
+      console.error("Leaderboard error:", err);
+      document.getElementById("leaderboardList").innerHTML =
+        '<div class="leaderboard-error">Unable to load leaderboard. Please refresh.</div>';
+      document.getElementById("rivalsList").innerHTML =
+        '<div class="leaderboard-error">Unable to load nearby rivals.</div>';
+    });
+
+  }catch(err){
+    console.error("Login error:", err);
+    currentUserId = "";
+    currentUserRank = 0;
+    currentUserData = null;
+    error.textContent = err.message || "Unable to log in.";
+  }finally{
+    button.disabled = false;
+    button.textContent = "Log In";
+  }
+}
+
+document.getElementById("emailInput").addEventListener("keydown", e => {
+  if(e.key === "Enter") document.getElementById("passcodeInput").focus();
+});
+document.getElementById("passcodeInput").addEventListener("keydown", e => {
+  if(e.key === "Enter") login();
+});
+
+/* TEAM SCORE */
+function renderTeamScore(team){
+  const card = document.getElementById("teamCard");
+  const nameEl = document.getElementById("teamName");
+  const totalEl = document.getElementById("teamTotalPoints");
+  const rankEl = document.getElementById("teamRankLine");
+  const listEl = document.getElementById("teamList");
+  const panels = document.getElementById("compactPanels");
+
+  if(!team || !Array.isArray(team.members) || !team.members.length){
+    card.style.display = "none";
+    panels.classList.add("no-team");
+    listEl.innerHTML = "";
+    rankEl.textContent = "Team Rank: —";
+    document.getElementById("teamWeeklyPanel").style.display = "none";
+    return;
+  }
+
+  card.style.display = "block";
+  panels.classList.remove("no-team");
+
+  nameEl.textContent = team.name || ("Team " + (team.number || ""));
+  totalEl.textContent = formatNumber(team.totalPoints || 0) + " pts";
+  rankEl.textContent = team.rank ? "Team Rank: #" + formatNumber(team.rank) : "Team Rank: —";
+
+  // Sort team members from highest points to lowest points.
+  const members = [...team.members].sort(
+    (a,b) => Number(b.points || 0) - Number(a.points || 0)
+  );
+
+  listEl.innerHTML = members.map(member => `
+    <div class="team-row">
+      <span class="team-email" title="${escapeHtml(member.email || "")}">
+        ${escapeHtml(member.email || "Member")}
+      </span>
+      <span class="team-pts">${formatNumber(member.points || 0)} pts</span>
+    </div>
+  `).join("");
+}
+
+/* WEEKLY PERFORMANCE */
+function formatSignedNumber(value){
+  const n = Number(value || 0);
+  return (n > 0 ? "+" : "") + formatNumber(n);
+}
+
+function renderWeeklyMetric(pointsId, rankId, periodId, metric){
+  const pointsEl = document.getElementById(pointsId);
+  const rankEl = document.getElementById(rankId);
+  const periodEl = document.getElementById(periodId);
+
+  if(!metric || !metric.available){
+    pointsEl.textContent = "— pts";
+    rankEl.textContent = "—";
+    periodEl.textContent = "No previous weekly data yet.";
+    return;
+  }
+
+  pointsEl.textContent = formatSignedNumber(metric.pointsChange) + " pts";
+
+  if(metric.rankChange > 0){
+    rankEl.textContent = "↑ " + formatNumber(metric.rankChange) + " places";
+  }else if(metric.rankChange < 0){
+    rankEl.textContent = "↓ " + formatNumber(Math.abs(metric.rankChange)) + " places";
+  }else{
+    rankEl.textContent = "No rank change";
+  }
+
+  periodEl.textContent = metric.fromDate + " → " + metric.toDate;
+}
+
+function renderWeeklyPerformance(data, hasTeam){
+  const weekly = data || {};
+  renderWeeklyMetric(
+    "personalWeeklyPoints",
+    "personalWeeklyRank",
+    "personalWeeklyPeriod",
+    weekly.personal
+  );
+
+  const teamPanel = document.getElementById("teamWeeklyPanel");
+  teamPanel.style.display = hasTeam ? "block" : "none";
+
+  if(hasTeam){
+    renderWeeklyMetric(
+      "teamWeeklyPoints",
+      "teamWeeklyRank",
+      "teamWeeklyPeriod",
+      weekly.team
+    );
+  }
+}
+
+/* PERSONAL PERFORMANCE */
+function renderPersonalScore(data){
+  const points = Number(data.points || 0);
+  const units = Number(data.units || 0);
+  const rank = Number(data.rank || 0);
+
+  const nextMilestone = getNextMilestone(points);
+  const prevMilestone = getPreviousMilestone(points);
+
+  document.getElementById("scoreEmail").textContent = data.email || "";
+  document.getElementById("pointsValue").textContent = formatNumber(points);
+  document.getElementById("unitsValue").textContent = formatNumber(units);
+  document.getElementById("rankValue").textContent = "#" + rank;
+
+  document.getElementById("rankGapTag").textContent =
+    rank === 1 ? "Leading the Contest" : "Target: #" + Math.max(1, rank - 1);
+
+  if(nextMilestone){
+    const span = nextMilestone - prevMilestone;
+    const pct = Math.max(0,Math.min(100,
+      span > 0
+        ? ((points - prevMilestone) / span) * 100
+        : (points / nextMilestone) * 100
+    ));
+
+    const pctDisplay = pct.toFixed(1).replace(/\.0$/,"");
+    const ptsLeft = Math.max(0,nextMilestone - points);
+
+    document.getElementById("nextMilestoneTitle").textContent =
+      "Next milestone: " + formatNumber(nextMilestone) + " points";
+
+    document.getElementById("progressPoints").innerHTML =
+      "<strong>" + formatNumber(points) + "</strong> / " + formatNumber(nextMilestone) + " pts";
+
+    document.getElementById("progressFill").style.width = pct + "%";
+    document.getElementById("progressPercentText").textContent = pctDisplay + "% completed";
+    document.getElementById("pointsToUnlockBadge").textContent =
+      formatNumber(ptsLeft) + " pts to unlock";
+
+  }else{
+    document.getElementById("nextMilestoneTitle").textContent = "All milestones unlocked!";
+    document.getElementById("progressPoints").innerHTML =
+      "<strong>" + formatNumber(points) + " pts</strong>";
+    document.getElementById("progressFill").style.width = "100%";
+    document.getElementById("progressPercentText").textContent = "100% completed";
+    document.getElementById("pointsToUnlockBadge").textContent = "Max Milestone Reached";
+  }
+}
+
+/* LOAD LEADERBOARD */
+function loadLeaderboard(userId, userRank){
+  return new Promise((resolve, reject) => {
+    const callback = "winterLeaderboard_" + Date.now() + "_" + Math.floor(Math.random() * 100000);
+    const script = document.createElement("script");
+    let finished = false;
+    let timer;
+
+    function cleanup(){
+      if(timer) clearTimeout(timer);
+      if(script.parentNode) script.parentNode.removeChild(script);
+      try{delete window[callback]}catch(e){window[callback] = undefined}
+    }
+
+    function success(data){
+      if(finished) return;
+      finished = true;
+      cleanup();
+
+      if(!data || data.error){
+        reject(new Error(data && data.error || "Leaderboard API error."));
+        return;
+      }
+
+      leaderboardData = Array.isArray(data.leaderboard) ? data.leaderboard : [];
+      updateLastUpdatedAt(data.lastUpdatedAt);
+      renderLeaderboardAndRivals(leaderboardData,userId,userRank);
+      resolve(leaderboardData);
+    }
+
+    function fail(){
+      if(finished) return;
+      finished = true;
+      cleanup();
+      reject(new Error("Unable to load leaderboard."));
+    }
+
+    window[callback] = success;
+    script.onerror = fail;
+    script.src = API_URL + "?mode=leaderboard&callback=" +
+      encodeURIComponent(callback) + "&_=" + Date.now();
+
+    document.body.appendChild(script);
+    timer = setTimeout(() => {if(!finished) fail()},12000);
+  });
+}
+
+/* RENDER RIVALS + LEADERBOARD */
+function renderLeaderboardAndRivals(rows,userId,userRank){
+  const lbContainer = document.getElementById("leaderboardList");
+  const rivalsContainer = document.getElementById("rivalsList");
+
+  if(!Array.isArray(rows) || !rows.length){
+    lbContainer.innerHTML = '<div class="leaderboard-error">No leaderboard data available.</div>';
+    rivalsContainer.innerHTML = '<div class="leaderboard-error">No rivals data available.</div>';
+    return;
+  }
+
+  const normalized = rows.map(r => ({
+    key:String(r.key || ""),
+    type:String(r.type || "individual"),
+    name:String(r.name || r.email || "Participant"),
+    email:String(r.email || r.name || "Participant"),
+    points:Number(r.points || 0),
+    rank:Number(r.rank || 0)
+  }))
+  .filter(r => r.rank > 0)
+  .sort((a,b) => a.rank - b.rank);
+
+  const ownKey = currentUserData && currentUserData.team
+    ? String(currentUserData.team.key || ("team:" + currentUserData.team.number))
+    : "email:" + String(userId || "").toLowerCase();
+
+  const userIndex = normalized.findIndex(r => r.key === ownKey);
+  const isTeamUser = !!(currentUserData && currentUserData.team);
+
+  const userObj = userIndex >= 0
+    ? normalized[userIndex]
+    : {
+        key:ownKey,
+        type:isTeamUser ? "team" : "individual",
+        name:isTeamUser
+          ? String(currentUserData.team.name || "My Team")
+          : String(currentUserData && currentUserData.email || userId),
+        email:isTeamUser
+          ? String(currentUserData.team.name || "My Team")
+          : String(currentUserData && currentUserData.email || userId),
+        points:isTeamUser
+          ? Number(currentUserData.team.totalPoints || 0)
+          : Number(currentUserData && currentUserData.points || 0),
+        rank:isTeamUser
+          ? Number(currentUserData.team.rank || 0)
+          : Number(currentUserData && currentUserData.rank || userRank || 0)
+      };
+
+  /* RIVALS: compare the user's public leaderboard entity (team or individual). */
+  if(userIndex >= 0){
+    const startIdx = Math.max(0,userIndex - 2);
+    const endIdx = Math.min(normalized.length - 1,userIndex + 1);
+    const nearby = normalized.slice(startIdx,endIdx + 1);
+
+    rivalsContainer.innerHTML = nearby.map(person => {
+      const isYou = person.key === ownKey;
+      const diff = person.points - userObj.points;
+      let badge = "";
+
+      if(isYou){
+        badge = '<div class="gap-you">' + formatNumber(person.points) + ' pts</div>';
+      }else if(diff > 0){
+        badge = '<div class="gap-pill gap-ahead">+' + formatNumber(diff) + ' pts</div>';
+      }else if(diff < 0){
+        badge = '<div class="gap-pill gap-behind">-' + formatNumber(Math.abs(diff)) + ' pts</div>';
+      }else{
+        badge = '<div class="gap-pill">0 pts</div>';
+      }
+
+      return `
+        <div class="rival-row${isYou ? " is-you" : ""}">
+          <div class="rival-rank">#${person.rank}</div>
+          <div class="rival-user">
+            ${isYou ? '<span class="you-badge">YOU</span>' : ""}
+            <div class="rival-email" title="${escapeHtml(person.name)}">
+              ${escapeHtml(person.name)}
+            </div>
+          </div>
+          ${badge}
+        </div>
+      `;
+    }).join("");
+  }else{
+    rivalsContainer.innerHTML = `
+      <div class="rival-row is-you">
+        <div class="rival-rank">#${userObj.rank || "—"}</div>
+        <div class="rival-user">
+          <span class="you-badge">YOU</span>
+          <div class="rival-email">${escapeHtml(userObj.name)}</div>
+        </div>
+        <div class="gap-you">${formatNumber(userObj.points)} pts</div>
+      </div>
+    `;
+  }
+
+  /* TOP 10 UNIFIED LEADERBOARD */
+  const top10 = normalized.filter(r => r.rank <= TOP_COUNT);
+
+  lbContainer.innerHTML = top10.map(r => {
+    const isYou = r.key === ownKey;
+    const isFirst = r.rank === 1;
+    const kindLabel = r.type === "team" ? "TEAM" : "";
+
+    return `
+      <div class="leaderboard-row${isFirst ? " rank-1" : ""}${isYou ? " you" : ""}">
+        <div class="rank-pill">#${r.rank}</div>
+        <div class="leaderboard-email" title="${escapeHtml(r.name)}">
+          ${escapeHtml(r.name)}
+          ${kindLabel ? '<span style="font-size:9px;color:#768D82;margin-left:5px;">' + kindLabel + '</span>' : ''}
+        </div>
+        ${isYou ? '<span class="you-badge">YOU</span>' : '<span></span>'}
+      </div>
+    `;
+  }).join("") || '<div class="leaderboard-error">No leaderboard data available.</div>';
+}
+
+/* REFRESH */
+async function refreshLeaderboard(){
+  const button = document.getElementById("refreshButton");
+  if(!currentUserId) return;
+
+  const old = button.textContent;
+  button.disabled = true;
+  button.textContent = "…";
+
+  try{
+    updateContestCountdown();
+    await loadLeaderboard(currentUserId,currentUserRank);
+  }catch(e){
+    document.getElementById("leaderboardList").innerHTML =
+      '<div class="leaderboard-error">Unable to refresh leaderboard.</div>';
+  }finally{
+    button.disabled = false;
+    button.textContent = old;
+  }
+}
+
+/* LOGOUT */
+function logout(){
+  currentUserId = "";
+  currentUserRank = 0;
+  currentUserData = null;
+  leaderboardData = [];
+
+  document.getElementById("dashboard").style.display = "none";
+  document.getElementById("loginScreen").style.display = "flex";
+  document.getElementById("emailInput").value = "";
+  document.getElementById("passcodeInput").value = "";
+  document.getElementById("loginError").textContent = "";
+
+  document.getElementById("leaderboardList").innerHTML =
+    '<div class="leaderboard-loading">Loading leaderboard...</div>';
+
+  document.getElementById("rivalsList").innerHTML =
+    '<div class="leaderboard-loading">Loading rivals...</div>';
+
+  document.getElementById("lastUpdatedAt").textContent = "Last updated: —";
+  document.getElementById("teamCard").style.display = "none";
+  document.getElementById("compactPanels").classList.remove("no-team");
+  document.getElementById("teamList").innerHTML = "";
+  document.getElementById("teamRankLine").textContent = "Team Rank: —";
+  document.getElementById("personalWeeklyPoints").textContent = "— pts";
+  document.getElementById("personalWeeklyRank").textContent = "—";
+  document.getElementById("personalWeeklyPeriod").textContent = "No previous weekly data yet.";
+  document.getElementById("teamWeeklyPanel").style.display = "none";
+
+  document.getElementById("pointsValue").textContent = "—";
+  document.getElementById("unitsValue").textContent = "—";
+  document.getElementById("rankValue").textContent = "—";
+  document.getElementById("progressFill").style.width = "0%";
+}
+
+/* INITIALIZE */
+updateContestCountdown();
+</script>
+</body>
+</html>
