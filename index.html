@@ -202,12 +202,13 @@ button, input { font: inherit; }
 
 .dashboard-grid {
   display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(350px, 1fr);
+  grid-template-columns: minmax(0, 2fr) minmax(300px, 1fr);
   gap: 22px;
   align-items: start;
 }
 
-.left-column {
+.left-column,
+.right-column {
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -411,7 +412,7 @@ button, input { font: inherit; }
 .weekly-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 14px;
+  gap: 12px;
 }
 
 .weekly-box {
@@ -419,7 +420,7 @@ button, input { font: inherit; }
   border: 1px solid #e3ece5;
   border-radius: 16px;
   padding: 16px 18px;
-  min-height: 105px;
+  min-height: 95px;
 }
 
 .weekly-pts { font: 800 24px Montserrat, sans-serif; }
@@ -671,7 +672,7 @@ button, input { font: inherit; }
 
 @media(max-width:920px) {
   .dashboard-grid { grid-template-columns: 1fr; }
-  .rivals-team-grid { grid-template-columns: 1fr; }
+  .rivals-team-grid { grid-template-columns: 1fr 1fr; }
 
   .top-header { padding: 46px 10px 22px; }
   .logout-button { top: 0; }
@@ -695,7 +696,8 @@ button, input { font: inherit; }
   .section-heading { font-size: 20px; }
 
   .metrics-split,
-  .weekly-grid { grid-template-columns: 1fr; }
+  .weekly-grid,
+  .rivals-team-grid { grid-template-columns: 1fr; }
 
   .rank-hero-box { min-height: 130px; }
   .rank-value { font-size: 38px; }
@@ -857,28 +859,6 @@ button, input { font: inherit; }
           </div>
         </section>
 
-        <!-- WEEKLY SNAPSHOT -->
-        <section class="card weekly-card">
-          <div class="weekly-header">
-            <h3 class="weekly-title">Weekly Snapshot</h3>
-            <span id="weeklyRange" class="weekly-footer-note">NOV 11 → NOV 16</span>
-          </div>
-
-          <div class="weekly-grid">
-            <div class="weekly-box">
-              <div class="weekly-box-label">Points Gained</div>
-              <div class="weekly-pts" id="weeklyPointsGained">—</div>
-              <div class="weekly-delta-badge" id="weeklyPointsNote">
-                No previous snapshot
-              </div>
-            </div>
-          </div>
-
-          <div class="muted-note">
-            Snapshots are recorded on Mondays (GMT+7)
-          </div>
-        </section>
-
         <!-- NEARBY RIVALS + TEAM PERFORMANCE -->
         <div class="rivals-team-grid">
 
@@ -918,28 +898,65 @@ button, input { font: inherit; }
       </div>
 
       <!-- RIGHT COLUMN -->
-      <section class="card leaderboard-card">
-        <div class="leaderboard-header">
-          <div>
-            <h2 class="leaderboard-title">Leaderboard</h2>
-            <div class="leaderboard-subtitle">
-              Top 10 Standings · Teams combined
-            </div>
+      <div class="right-column">
+
+        <!-- WEEKLY SNAPSHOT -->
+        <section class="card weekly-card">
+          <div class="weekly-header">
+            <h3 class="weekly-title">Weekly Snapshot</h3>
+            <span id="weeklyRange" class="weekly-footer-note">NOV 11 → NOV 16</span>
           </div>
 
-          <button
-            id="refreshButton"
-            class="refresh-button"
-            type="button"
-            onclick="refreshLeaderboard()"
-            title="Refresh leaderboard"
-          >↻</button>
-        </div>
+          <div class="weekly-grid">
 
-        <div id="leaderboardList" class="leaderboard-list">
-          <div class="leaderboard-loading">Loading leaderboard...</div>
-        </div>
-      </section>
+            <div class="weekly-box">
+              <div class="weekly-box-label">Points Gained</div>
+              <div class="weekly-pts" id="weeklyPointsGained">—</div>
+              <div class="weekly-delta-badge" id="weeklyPointsNote">
+                No previous snapshot
+              </div>
+            </div>
+
+            <div class="weekly-box">
+              <div class="weekly-box-label">Rank Movement</div>
+              <div class="weekly-pts" id="weeklyRankMovement">—</div>
+              <div class="weekly-delta-badge" id="weeklyRankNote">
+                No previous snapshot
+              </div>
+            </div>
+
+          </div>
+
+          <div class="muted-note">
+            Snapshots are recorded on Mondays (GMT+7)
+          </div>
+        </section>
+
+        <!-- LEADERBOARD -->
+        <section class="card leaderboard-card">
+          <div class="leaderboard-header">
+            <div>
+              <h2 class="leaderboard-title">Leaderboard</h2>
+              <div class="leaderboard-subtitle">
+                Top 10 Standings · Teams combined
+              </div>
+            </div>
+
+            <button
+              id="refreshButton"
+              class="refresh-button"
+              type="button"
+              onclick="refreshLeaderboard()"
+              title="Refresh leaderboard"
+            >↻</button>
+          </div>
+
+          <div id="leaderboardList" class="leaderboard-list">
+            <div class="leaderboard-loading">Loading leaderboard...</div>
+          </div>
+        </section>
+
+      </div>
 
     </main>
 
@@ -955,7 +972,7 @@ button, input { font: inherit; }
 /* ================= CONFIG ================= */
 
 const API_URL =
-  "https://script.google.com/macros/s/AKfycbzEhuxZPljx4Nyn46aEOduEJDVhbUbRGtxbEZE8_cCL5WV1-4NAoNyqi_X45kBe5TVp3g/exec";
+  "https://script.google.com/macros/s/AKfycbzEhuxZPljx4Nyn46aEOduEJDVhbUbRGtxbEZE8_cCL5WV-1-4NAoNyqi_X45kBe5TVp3g/exec";
 
 let currentUserId = "";
 let currentUserRank = 0;
@@ -1254,15 +1271,24 @@ function dateLabel(value) {
 function renderWeekly(snapshot) {
   const pointsEl = $("weeklyPointsGained");
   const pointsNoteEl = $("weeklyPointsNote");
+  const rankEl = $("weeklyRankMovement");
+  const rankNoteEl = $("weeklyRankNote");
   const rangeEl = $("weeklyRange");
 
   if (!snapshot || !snapshot.available) {
     pointsEl.textContent = "—";
     pointsNoteEl.textContent = "No previous snapshot";
     pointsNoteEl.className = "weekly-delta-badge";
+
+    rankEl.textContent = "—";
+    rankNoteEl.textContent = "No previous snapshot";
+    rankNoteEl.className = "weekly-delta-badge";
+
     rangeEl.textContent = "NOV 11 → NOV 16";
     return;
   }
+
+  /* POINTS GAINED */
 
   const pointsChange = Number(snapshot.pointsChange || 0);
 
@@ -1278,6 +1304,52 @@ function renderWeekly(snapshot) {
   pointsNoteEl.className =
     "weekly-delta-badge" +
     (pointsChange < 0 ? " negative" : "");
+
+  /* RANK MOVEMENT */
+
+  const previousRank = Number(snapshot.previousRank || 0);
+  const currentRank = Number(snapshot.currentRank || 0);
+
+  // Rank movement is positive when the user moves up.
+  // Prefer calculating from the two actual ranks when available.
+  const rankChange =
+    previousRank > 0 && currentRank > 0
+      ? previousRank - currentRank
+      : Number(snapshot.rankChange || 0);
+
+  if (previousRank > 0 && currentRank > 0) {
+    if (rankChange > 0) {
+      rankEl.textContent = "↑ " + fmt(rankChange);
+      rankNoteEl.textContent =
+        "Moved up from #" + previousRank + " to #" + currentRank;
+      rankNoteEl.className = "weekly-delta-badge";
+    } else if (rankChange < 0) {
+      rankEl.textContent = "↓ " + fmt(Math.abs(rankChange));
+      rankNoteEl.textContent =
+        "Moved down from #" + previousRank + " to #" + currentRank;
+      rankNoteEl.className = "weekly-delta-badge negative";
+    } else {
+      rankEl.textContent = "—";
+      rankNoteEl.textContent = "Rank unchanged at #" + currentRank;
+      rankNoteEl.className = "weekly-delta-badge";
+    }
+  } else if (rankChange !== 0) {
+    rankEl.textContent =
+      (rankChange > 0 ? "↑ " : "↓ ") + fmt(Math.abs(rankChange));
+
+    rankNoteEl.textContent =
+      rankChange > 0
+        ? "Moved up in the ranking"
+        : "Moved down in the ranking";
+
+    rankNoteEl.className =
+      "weekly-delta-badge" +
+      (rankChange < 0 ? " negative" : "");
+  } else {
+    rankEl.textContent = "—";
+    rankNoteEl.textContent = "No rank movement";
+    rankNoteEl.className = "weekly-delta-badge";
+  }
 
   if (snapshot.fromDate && snapshot.toDate) {
     rangeEl.textContent =
@@ -1586,6 +1658,12 @@ function logout() {
 
   $("weeklyPointsGained").textContent = "—";
   $("weeklyPointsNote").textContent = "No previous snapshot";
+  $("weeklyPointsNote").className = "weekly-delta-badge";
+
+  $("weeklyRankMovement").textContent = "—";
+  $("weeklyRankNote").textContent = "No previous snapshot";
+  $("weeklyRankNote").className = "weekly-delta-badge";
+
   $("weeklyRange").textContent = "NOV 11 → NOV 16";
 
   $("progressFill").style.width = "0%";
